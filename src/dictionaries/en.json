@@ -1,0 +1,127 @@
+{
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "about": "About",
+    "contacts": "Contacts",
+    "cart": "Cart",
+    "account": "Account",
+    "login": "Log In",
+    "register": "Register",
+    "logout": "Log Out"
+  },
+  "hero": {
+    "title": "ManPrime — Your strength,",
+    "titleAccent": "your choice",
+    "subtitle": "Natural supplements for men's health and longevity. Designed for real men.",
+    "cta": "Choose a product",
+    "ctaSecondary": "Learn more"
+  },
+  "features": {
+    "title": "Why ManPrime?",
+    "natural": {
+      "title": "100% Natural Formula",
+      "desc": "Only verified natural ingredients without harmful additives"
+    },
+    "certified": {
+      "title": "Certified Product",
+      "desc": "Clinically tested and properly certified"
+    },
+    "delivery": {
+      "title": "Fast Delivery",
+      "desc": "Delivery across Ukraine via Nova Poshta and Ukrposhta in 1–2 weeks"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "desc": "Discreet packaging with no unnecessary labels"
+    }
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Three formulas for different needs",
+    "add_to_cart": "Add to Cart",
+    "buy_now": "Buy Now",
+    "out_of_stock": "Out of Stock",
+    "uah": "UAH"
+  },
+  "delivery_info": {
+    "title": "Delivery",
+    "text": "We deliver across Ukraine. Delivery time: 1–2 weeks. Nova Poshta and Ukrposhta."
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "email": "manprimeua@gmail.com",
+    "city": "Dnipro, Ukraine"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continue": "Continue shopping",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "personal": "Personal details",
+    "delivery": "Delivery",
+    "payment": "Payment",
+    "name": "First name",
+    "surname": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "city": "City",
+    "street": "Street",
+    "house": "Building",
+    "apartment": "Apartment",
+    "carrier": "Delivery service",
+    "pay_liqpay": "Pay with LiqPay",
+    "pay_mono": "Pay with Monobank",
+    "pay_portmone": "Pay with Portmone",
+    "place_order": "Place Order"
+  },
+  "auth": {
+    "login_title": "Log In",
+    "register_title": "Register",
+    "email": "Email",
+    "password": "Password",
+    "name": "First name",
+    "surname": "Last name",
+    "phone": "Phone",
+    "login_btn": "Log In",
+    "register_btn": "Register",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?"
+  },
+  "account": {
+    "title": "My Account",
+    "orders": "My Orders",
+    "no_orders": "You have no orders yet",
+    "order_num": "Order #",
+    "status": "Status",
+    "tracking": "Tracking",
+    "date": "Date"
+  },
+  "about": {
+    "title": "About ManPrime",
+    "text": "ManPrime is a brand of natural supplements created to support men's health, potency, and longevity. We combine traditional wisdom and modern science to create effective, safe products."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "email": "Email",
+    "address": "Address",
+    "send_message": "Send a message",
+    "your_name": "Your name",
+    "your_email": "Your email",
+    "message": "Message",
+    "send": "Send"
+  },
+  "order_status": {
+    "PENDING": "Pending",
+    "CONFIRMED": "Confirmed",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
+    "CANCELLED": "Cancelled"
+  }
+}
