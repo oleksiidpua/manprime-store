@@ -21,10 +21,10 @@ export default function CartClient({ dict, lang }: { dict: Dict; lang: Locale })
     return (
       <div className="text-center py-24">
         <div className="text-5xl mb-6">🛒</div>
-        <p className="text-[#555] text-xl mb-8">{c.empty}</p>
+        <p className="text-[#8b9ab0] text-xl mb-8">{c.empty}</p>
         <Link
           href={`/${lang}/catalog`}
-          className="inline-block bg-[#A52A2A] hover:bg-[#C03333] text-white font-heading font-bold px-10 py-4 uppercase tracking-widest text-sm transition-colors"
+          className="inline-block bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-semibold px-10 py-4 uppercase tracking-widest text-sm transition-colors rounded-sm"
         >
           {c.continue}
         </Link>
@@ -36,32 +36,32 @@ export default function CartClient({ dict, lang }: { dict: Dict; lang: Locale })
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2 space-y-3">
         {cart.map((item) => (
-          <div key={item.id} className="bg-[#111111] border border-[#1E1E1E] p-5 flex gap-4 items-center">
-            <div className="w-16 h-16 bg-[#1A1A1A] border border-[#2A2A2A] flex items-center justify-center shrink-0">
+          <div key={item.id} className="bg-[#1c2333] border border-[#2a3347] p-5 flex gap-4 items-center rounded-sm">
+            <div className="w-16 h-16 bg-[#232d42] border border-[#2a3347] flex items-center justify-center shrink-0 rounded-sm">
               {item.imageUrl ? (
-                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover rounded-sm" />
               ) : (
                 <span className="text-2xl">💊</span>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-heading font-bold text-white truncate">{item.name}</h3>
-              <p className="text-[#C9A84C] font-bold text-sm mt-0.5">{item.price} {dict.products.uah}</p>
+              <h3 className="font-semibold text-[#e8eaf0] truncate">{item.name}</h3>
+              <p className="text-[#c9a84c] font-bold text-sm mt-0.5">{item.price} {dict.products.uah}</p>
             </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleQty(item.id, item.quantity - 1)}
-                className="w-8 h-8 border border-[#2A2A2A] hover:border-[#C9A84C] hover:text-[#C9A84C] text-[#666] flex items-center justify-center transition-colors"
+                className="w-8 h-8 border border-[#2a3347] hover:border-[#c9a84c] hover:text-[#c9a84c] text-[#8b9ab0] flex items-center justify-center transition-colors rounded-sm"
               >−</button>
-              <span className="w-5 text-center text-white font-medium">{item.quantity}</span>
+              <span className="w-5 text-center text-[#e8eaf0] font-medium">{item.quantity}</span>
               <button
                 onClick={() => handleQty(item.id, item.quantity + 1)}
-                className="w-8 h-8 border border-[#2A2A2A] hover:border-[#C9A84C] hover:text-[#C9A84C] text-[#666] flex items-center justify-center transition-colors"
+                className="w-8 h-8 border border-[#2a3347] hover:border-[#c9a84c] hover:text-[#c9a84c] text-[#8b9ab0] flex items-center justify-center transition-colors rounded-sm"
               >+</button>
             </div>
             <button
               onClick={() => handleRemove(item.id)}
-              className="ml-2 text-[#333] hover:text-red-600 transition-colors"
+              className="ml-2 text-[#8b9ab0] hover:text-red-500 transition-colors"
               aria-label={c.remove}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,31 +73,31 @@ export default function CartClient({ dict, lang }: { dict: Dict; lang: Locale })
       </div>
 
       {/* Summary */}
-      <div className="bg-[#111111] border border-[#1E1E1E] p-6 h-fit sticky top-24">
-        <h2 className="font-heading font-bold text-white text-lg uppercase tracking-wide mb-6">{c.total}</h2>
+      <div className="bg-[#1c2333] border border-[#2a3347] p-6 h-fit sticky top-24 rounded-sm">
+        <h2 className="font-heading text-2xl text-[#e8eaf0] uppercase mb-6">{c.total}</h2>
         <div className="space-y-3 mb-6">
           {cart.map((item) => (
             <div key={item.id} className="flex justify-between text-sm">
-              <span className="text-[#555]">{item.name} × {item.quantity}</span>
-              <span className="text-[#9CA3AF]">{item.price * item.quantity} {dict.products.uah}</span>
+              <span className="text-[#8b9ab0]">{item.name} × {item.quantity}</span>
+              <span className="text-[#8b9ab0]">{item.price * item.quantity} {dict.products.uah}</span>
             </div>
           ))}
         </div>
-        <div className="border-t border-[#1E1E1E] pt-4 mb-6">
+        <div className="border-t border-[#2a3347] pt-4 mb-6">
           <div className="flex justify-between items-baseline">
-            <span className="text-[#9CA3AF] font-medium">{c.total}</span>
-            <span className="text-[#C9A84C] font-black text-2xl">{getCartTotal(cart)} {dict.products.uah}</span>
+            <span className="text-[#8b9ab0] font-medium">{c.total}</span>
+            <span className="text-[#c9a84c] font-bold text-2xl">{getCartTotal(cart)} {dict.products.uah}</span>
           </div>
         </div>
         <Link
           href={`/${lang}/checkout`}
-          className="block w-full bg-[#A52A2A] hover:bg-[#C03333] text-white font-heading font-bold py-4 text-center uppercase tracking-widest text-sm transition-colors"
+          className="block w-full bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-semibold py-4 text-center uppercase tracking-widest text-sm transition-colors rounded-sm"
         >
           {c.checkout}
         </Link>
         <Link
           href={`/${lang}/catalog`}
-          className="block w-full text-center text-[#444] hover:text-[#9CA3AF] text-sm mt-4 transition-colors"
+          className="block w-full text-center text-[#8b9ab0] hover:text-[#e8eaf0] text-sm mt-4 transition-colors"
         >
           ← {c.continue}
         </Link>

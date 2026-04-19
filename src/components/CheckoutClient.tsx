@@ -61,16 +61,16 @@ export default function CheckoutClient({ dict, lang }: { dict: Dict; lang: Local
     }
   }
 
-  const inputClass = 'w-full bg-[#0A0A0A] border border-[#2A2A2A] focus:border-[#C9A84C]/50 text-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#333]'
-  const labelClass = 'block text-xs font-semibold text-[#555] uppercase tracking-wider mb-2'
+  const inputClass = 'w-full bg-[#0d1120] border border-[#2a3347] focus:border-[#c9a84c]/50 text-[#e8eaf0] px-4 py-3 text-sm outline-none transition-colors placeholder:text-[#8b9ab0]/40 rounded-sm'
+  const labelClass = 'block text-xs font-semibold text-[#8b9ab0] uppercase tracking-wider mb-2'
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2 space-y-6">
 
         {/* Personal */}
-        <div className="bg-[#111111] border border-[#1E1E1E] p-6">
-          <h2 className="font-heading font-bold text-white text-sm uppercase tracking-widest mb-6">{c.personal}</h2>
+        <div className="bg-[#1c2333] border border-[#2a3347] p-6 rounded-sm">
+          <h2 className="font-heading text-xl text-[#e8eaf0] uppercase tracking-widest mb-6">{c.personal}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div><label className={labelClass}>{c.name} *</label><input name="name" type="text" required className={inputClass} /></div>
             <div><label className={labelClass}>{c.surname} *</label><input name="surname" type="text" required className={inputClass} /></div>
@@ -80,18 +80,18 @@ export default function CheckoutClient({ dict, lang }: { dict: Dict; lang: Local
         </div>
 
         {/* Delivery */}
-        <div className="bg-[#111111] border border-[#1E1E1E] p-6">
-          <h2 className="font-heading font-bold text-white text-sm uppercase tracking-widest mb-6">{c.delivery}</h2>
+        <div className="bg-[#1c2333] border border-[#2a3347] p-6 rounded-sm">
+          <h2 className="font-heading text-xl text-[#e8eaf0] uppercase tracking-widest mb-6">{c.delivery}</h2>
           <div className="grid grid-cols-2 gap-3 mb-5">
             {(['NOVAPOSHTA', 'UKRPOSHTA'] as Carrier[]).map((c_) => (
               <button
                 key={c_}
                 type="button"
                 onClick={() => setCarrier(c_)}
-                className={`py-3 px-4 border text-sm font-medium transition-colors ${
+                className={`py-3 px-4 border text-sm font-medium transition-colors rounded-sm ${
                   carrier === c_
-                    ? 'border-[#C9A84C]/50 bg-[#C9A84C]/5 text-[#C9A84C]'
-                    : 'border-[#2A2A2A] text-[#555] hover:border-[#3A3A3A] hover:text-[#9CA3AF]'
+                    ? 'border-[#c9a84c]/50 bg-[#c9a84c]/5 text-[#c9a84c]'
+                    : 'border-[#2a3347] text-[#8b9ab0] hover:border-[#3a4a66] hover:text-[#e8eaf0]'
                 }`}
               >
                 {c_ === 'NOVAPOSHTA' ? '📦 Нова Пошта' : '✉️ Укрпошта'}
@@ -107,8 +107,8 @@ export default function CheckoutClient({ dict, lang }: { dict: Dict; lang: Local
         </div>
 
         {/* Payment */}
-        <div className="bg-[#111111] border border-[#1E1E1E] p-6">
-          <h2 className="font-heading font-bold text-white text-sm uppercase tracking-widest mb-6">{c.payment}</h2>
+        <div className="bg-[#1c2333] border border-[#2a3347] p-6 rounded-sm">
+          <h2 className="font-heading text-xl text-[#e8eaf0] uppercase tracking-widest mb-6">{c.payment}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               { key: 'LIQPAY' as Payment, label: 'LiqPay', sub: 'ПриватБанк' },
@@ -119,10 +119,10 @@ export default function CheckoutClient({ dict, lang }: { dict: Dict; lang: Local
                 key={key}
                 type="button"
                 onClick={() => setPayment(key)}
-                className={`py-3 px-4 border text-sm font-medium transition-colors flex flex-col items-center gap-1 ${
+                className={`py-3 px-4 border text-sm font-medium transition-colors flex flex-col items-center gap-1 rounded-sm ${
                   payment === key
-                    ? 'border-[#C9A84C]/50 bg-[#C9A84C]/5 text-[#C9A84C]'
-                    : 'border-[#2A2A2A] text-[#555] hover:border-[#3A3A3A] hover:text-[#9CA3AF]'
+                    ? 'border-[#c9a84c]/50 bg-[#c9a84c]/5 text-[#c9a84c]'
+                    : 'border-[#2a3347] text-[#8b9ab0] hover:border-[#3a4a66] hover:text-[#e8eaf0]'
                 }`}
               >
                 <span className="font-bold">{label}</span>
@@ -135,31 +135,31 @@ export default function CheckoutClient({ dict, lang }: { dict: Dict; lang: Local
 
       {/* Summary */}
       <div>
-        <div className="bg-[#111111] border border-[#1E1E1E] p-6 sticky top-24">
-          <h2 className="font-heading font-bold text-white text-sm uppercase tracking-widest mb-6">{dict.cart.total}</h2>
+        <div className="bg-[#1c2333] border border-[#2a3347] p-6 sticky top-24 rounded-sm">
+          <h2 className="font-heading text-xl text-[#e8eaf0] uppercase tracking-widest mb-6">{dict.cart.total}</h2>
           <div className="space-y-3 mb-5">
             {cart.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
-                <span className="text-[#555]">{item.name} × {item.quantity}</span>
-                <span className="text-[#9CA3AF]">{item.price * item.quantity} {dict.products.uah}</span>
+                <span className="text-[#8b9ab0]">{item.name} × {item.quantity}</span>
+                <span className="text-[#8b9ab0]">{item.price * item.quantity} {dict.products.uah}</span>
               </div>
             ))}
           </div>
-          <div className="border-t border-[#1E1E1E] pt-4 mb-6">
+          <div className="border-t border-[#2a3347] pt-4 mb-6">
             <div className="flex justify-between items-baseline">
-              <span className="text-[#9CA3AF]">{dict.cart.total}</span>
-              <span className="text-[#C9A84C] font-black text-xl">{getCartTotal(cart)} {dict.products.uah}</span>
+              <span className="text-[#8b9ab0]">{dict.cart.total}</span>
+              <span className="text-[#c9a84c] font-bold text-xl">{getCartTotal(cart)} {dict.products.uah}</span>
             </div>
           </div>
           {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
           <button
             type="submit"
             disabled={loading || cart.length === 0}
-            className="w-full bg-[#A52A2A] hover:bg-[#C03333] disabled:opacity-40 text-white font-heading font-bold py-4 uppercase tracking-widest text-sm transition-colors"
+            className="w-full bg-[#b5622a] hover:bg-[#cc7033] disabled:opacity-40 text-[#e8eaf0] font-semibold py-4 uppercase tracking-widest text-sm transition-colors rounded-sm"
           >
             {loading ? '...' : c.place_order}
           </button>
-          <p className="text-xs text-[#333] text-center mt-4 uppercase tracking-wider">
+          <p className="text-xs text-[#8b9ab0]/50 text-center mt-4 uppercase tracking-wider">
             🔒 {lang === 'uk' ? 'Безпечна оплата' : lang === 'ru' ? 'Безопасная оплата' : 'Secure payment'}
           </p>
         </div>

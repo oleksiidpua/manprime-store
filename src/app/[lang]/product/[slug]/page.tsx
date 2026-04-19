@@ -30,51 +30,51 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
   const oldPrice = OLD_PRICES[product.slug]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0b0f1a]">
       <div className="max-w-5xl mx-auto px-4 py-12">
-        <nav className="text-sm text-[#444] mb-10 flex items-center gap-2">
-          <Link href={`/${lang}`} className="hover:text-[#C9A84C] transition-colors">{dict.nav.home}</Link>
-          <span className="text-[#333]">›</span>
-          <Link href={`/${lang}/catalog`} className="hover:text-[#C9A84C] transition-colors">{dict.nav.catalog}</Link>
-          <span className="text-[#333]">›</span>
-          <span className="text-[#666]">{product[nameKey]}</span>
+        <nav className="text-sm text-[#8b9ab0] mb-10 flex items-center gap-2">
+          <Link href={`/${lang}`} className="hover:text-[#c9a84c] transition-colors">{dict.nav.home}</Link>
+          <span className="text-[#2a3347]">›</span>
+          <Link href={`/${lang}/catalog`} className="hover:text-[#c9a84c] transition-colors">{dict.nav.catalog}</Link>
+          <span className="text-[#2a3347]">›</span>
+          <span className="text-[#8b9ab0]">{product[nameKey]}</span>
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Image */}
-          <div className="aspect-square bg-linear-to-b from-[#1A1A1A] to-[#0F0F0F] border border-[#1E1E1E] flex items-center justify-center">
+          <div className="aspect-square bg-linear-to-b from-[#232d42] to-[#1a2133] border border-[#2a3347] flex items-center justify-center rounded-sm">
             {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
+              <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover rounded-sm" />
             ) : (
               <div className="flex flex-col items-center gap-4">
-                <div className="w-32 h-32 rounded-full bg-[#1E1E1E] border border-[#2A2A2A] flex items-center justify-center">
+                <div className="w-32 h-32 rounded-full bg-[#2a3347] border border-[#3a4a66] flex items-center justify-center">
                   <span className="text-6xl">💊</span>
                 </div>
-                <div className="w-20 h-px bg-linear-to-r from-transparent via-[#C9A84C]/20 to-transparent" />
+                <div className="w-20 h-px bg-linear-to-r from-transparent via-[#c9a84c]/20 to-transparent" />
               </div>
             )}
           </div>
 
           {/* Info */}
           <div className="flex flex-col">
-            <h1 className="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight mb-4">
+            <h1 className="font-heading text-4xl md:text-5xl text-[#e8eaf0] uppercase mb-4">
               {product[nameKey]}
             </h1>
-            <p className="text-[#9CA3AF] leading-relaxed mb-6">{product[descKey]}</p>
+            <p className="text-[#8b9ab0] leading-relaxed mb-6">{product[descKey]}</p>
 
             {product[compKey] && (
-              <div className="border border-[#1E1E1E] bg-[#111111] p-5 mb-5">
-                <h3 className="text-[#C9A84C] font-heading font-bold text-xs tracking-widest uppercase mb-3">{compLabel}</h3>
-                <p className="text-[#666] text-sm leading-relaxed">{product[compKey]}</p>
+              <div className="border border-[#2a3347] bg-[#1c2333] p-5 mb-4 rounded-sm">
+                <h3 className="text-[#c9a84c] font-heading text-sm tracking-widest uppercase mb-3">{compLabel}</h3>
+                <p className="text-[#8b9ab0] text-sm leading-relaxed">{product[compKey]}</p>
               </div>
             )}
 
-            <div className="border border-[#1E1E1E] bg-[#111111] p-5 mb-8">
-              <h3 className="text-[#C9A84C] font-heading font-bold text-xs tracking-widest uppercase mb-4">{benefitsLabel}</h3>
+            <div className="border border-[#2a3347] bg-[#1c2333] p-5 mb-8 rounded-sm">
+              <h3 className="text-[#c9a84c] font-heading text-sm tracking-widest uppercase mb-4">{benefitsLabel}</h3>
               <ul className="space-y-2">
                 {[dict.features.natural.title, dict.features.certified.title, dict.features.privacy.title].map((b) => (
-                  <li key={b} className="flex items-center gap-3 text-sm text-[#9CA3AF]">
-                    <span className="text-[#C9A84C] text-xs">◆</span>
+                  <li key={b} className="flex items-center gap-3 text-sm text-[#8b9ab0]">
+                    <span className="text-[#8b6f47] text-xs">◆</span>
                     {b}
                   </li>
                 ))}
@@ -84,13 +84,14 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
             <div className="flex items-end justify-between mb-8">
               <div>
                 {oldPrice && (
-                  <span className="block text-[#3A3A3A] text-sm line-through mb-1">{oldPrice} {dict.products.uah}</span>
+                  <span className="block text-[#8b9ab0] text-sm line-through mb-1">{oldPrice} {dict.products.uah}</span>
                 )}
-                <span className="text-[#C9A84C] font-black text-5xl">{product.price}</span>
-                <span className="text-[#555] text-base ml-2">{dict.products.uah}</span>
+                <span className="text-[#c9a84c] font-bold text-5xl leading-none">{product.price}</span>
+                <span className="text-[#8b9ab0] text-base ml-2">{dict.products.uah}</span>
               </div>
-              <span className="text-[#3A7A3A] text-sm font-medium uppercase tracking-wider">
-                ● {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
+              <span className="text-[#4ade80] text-sm font-medium uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#4ade80] inline-block" />
+                {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
               </span>
             </div>
 
@@ -98,13 +99,13 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
               <AddToCartButton product={product} nameKey={nameKey} dict={dict} lang={lang} />
               <Link
                 href={`/${lang}/checkout?product=${product.slug}`}
-                className="flex-1 bg-[#A52A2A] hover:bg-[#C03333] text-white font-heading font-bold py-4 text-center uppercase tracking-widest text-sm transition-all hover:shadow-[0_0_20px_rgba(165,42,42,0.3)]"
+                className="flex-1 bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-semibold py-4 text-center uppercase tracking-widest text-sm transition-all hover:shadow-[0_0_20px_rgba(181,98,42,0.3)] rounded-sm"
               >
                 {dict.products.buy_now}
               </Link>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-[#1E1E1E] text-sm text-[#444] flex items-center gap-2">
+            <div className="mt-6 pt-6 border-t border-[#2a3347] text-sm text-[#8b9ab0] flex items-center gap-2">
               <span>📦</span>
               <span>{dict.delivery_info.text}</span>
             </div>

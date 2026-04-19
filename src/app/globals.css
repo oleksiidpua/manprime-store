@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0A0A0A;
-  --surface: #141414;
-  --graphite: #1E1E1E;
-  --gold: #C9A84C;
-  --gold-hover: #E0BB5F;
-  --burgundy: #A52A2A;
-  --burgundy-hover: #C03333;
-  --foreground: #FFFFFF;
-  --muted: #9CA3AF;
-  --border: #2A2A2A;
-  --accent: #C9A84C;
-  --accent-hover: #E0BB5F;
-  --cream: #141414;
+  --background: #0b0f1a;
+  --surface: #111827;
+  --graphite: #1c2333;
+  --gold: #c9a84c;
+  --gold-hover: #e0bb5f;
+  --amber: #b5622a;
+  --amber-hover: #cc7033;
+  --foreground: #e8eaf0;
+  --muted: #8b9ab0;
+  --border: #2a3347;
+  --brown: #8b6f47;
+  --accent: #c9a84c;
+  --cream: #111827;
 }
 
 @theme inline {
@@ -22,24 +22,26 @@
   --color-graphite: var(--graphite);
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
-  --color-burgundy: var(--burgundy);
-  --color-burgundy-hover: var(--burgundy-hover);
+  --color-amber: var(--amber);
+  --color-amber-hover: var(--amber-hover);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-brown: var(--brown);
   --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
   --color-cream: var(--cream);
-  --font-heading: var(--font-montserrat);
-  --font-sans: var(--font-inter);
+  --font-heading: var(--font-bebas), var(--font-montserrat);
+  --font-sans: var(--font-montserrat);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, sans-serif;
+  font-family: var(--font-montserrat), Arial, sans-serif;
+  line-height: 1.65;
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-montserrat), Arial, sans-serif;
+  font-family: var(--font-bebas), var(--font-montserrat), Arial, sans-serif;
+  letter-spacing: 0.05em;
 }

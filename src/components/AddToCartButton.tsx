@@ -36,7 +36,7 @@ export default function AddToCartButton({
   return (
     <button
       onClick={handleAdd}
-      className="flex-1 border border-[#A52A2A] hover:bg-[#A52A2A] text-[#C9A84C] hover:text-white font-heading font-bold py-4 uppercase tracking-widest text-sm transition-all"
+      className="flex-1 border border-[#8b9ab0] hover:border-[#c9a84c] text-[#8b9ab0] hover:text-[#c9a84c] font-semibold py-4 uppercase tracking-widest text-sm transition-all rounded-sm"
     >
       {added
         ? (lang === 'uk' ? '✓ Додано!' : lang === 'ru' ? '✓ Добавлено!' : '✓ Added!')

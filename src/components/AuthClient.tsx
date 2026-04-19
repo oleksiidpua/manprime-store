@@ -34,24 +34,24 @@ export default function AuthClient({ dict, lang }: { dict: Dict; lang: Locale })
     }
   }
 
-  const inputClass = 'w-full bg-[#0A0A0A] border border-[#2A2A2A] focus:border-[#C9A84C]/50 text-white px-4 py-3 text-sm outline-none transition-colors'
-  const labelClass = 'block text-xs font-semibold text-[#555] uppercase tracking-wider mb-2'
+  const inputClass = 'w-full bg-[#0d1120] border border-[#2a3347] focus:border-[#c9a84c]/50 text-[#e8eaf0] px-4 py-3 text-sm outline-none transition-colors rounded-sm'
+  const labelClass = 'block text-xs font-semibold text-[#8b9ab0] uppercase tracking-wider mb-2'
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-[#111111] border border-[#1E1E1E] p-8">
+      <div className="bg-[#1c2333] border border-[#2a3347] p-8 rounded-sm">
         <div className="text-center mb-8">
-          <span className="text-[#C9A84C] font-heading font-black text-2xl tracking-[0.15em]">MANPRIME</span>
-          <h1 className="font-heading font-bold text-white text-lg uppercase tracking-widest mt-2">
+          <span className="text-[#c9a84c] font-heading text-3xl tracking-[0.15em]">MANPRIME</span>
+          <h1 className="font-semibold text-[#e8eaf0] text-lg uppercase tracking-widest mt-2">
             {mode === 'login' ? a.login_title : a.register_title}
           </h1>
         </div>
 
-        <div className="flex border border-[#2A2A2A] mb-8">
+        <div className="flex border border-[#2a3347] mb-8 rounded-sm overflow-hidden">
           <button
             onClick={() => setMode('login')}
             className={`flex-1 py-2.5 text-xs font-semibold uppercase tracking-widest transition-colors ${
-              mode === 'login' ? 'bg-[#A52A2A] text-white' : 'text-[#555] hover:text-[#9CA3AF]'
+              mode === 'login' ? 'bg-[#b5622a] text-[#e8eaf0]' : 'text-[#8b9ab0] hover:text-[#e8eaf0]'
             }`}
           >
             {a.login_btn}
@@ -59,7 +59,7 @@ export default function AuthClient({ dict, lang }: { dict: Dict; lang: Locale })
           <button
             onClick={() => setMode('register')}
             className={`flex-1 py-2.5 text-xs font-semibold uppercase tracking-widest transition-colors ${
-              mode === 'register' ? 'bg-[#A52A2A] text-white' : 'text-[#555] hover:text-[#9CA3AF]'
+              mode === 'register' ? 'bg-[#b5622a] text-[#e8eaf0]' : 'text-[#8b9ab0] hover:text-[#e8eaf0]'
             }`}
           >
             {a.register_btn}
@@ -84,7 +84,7 @@ export default function AuthClient({ dict, lang }: { dict: Dict; lang: Locale })
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#A52A2A] hover:bg-[#C03333] disabled:opacity-40 text-white font-heading font-bold py-4 uppercase tracking-widest text-sm transition-colors mt-2"
+            className="w-full bg-[#b5622a] hover:bg-[#cc7033] disabled:opacity-40 text-[#e8eaf0] font-semibold py-4 uppercase tracking-widest text-sm transition-colors mt-2 rounded-sm"
           >
             {loading ? '...' : mode === 'login' ? a.login_btn : a.register_btn}
           </button>
