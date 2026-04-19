@@ -19,52 +19,84 @@ export default function Header({ dict, lang }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const n = dict.nav
 
+  const navLinks = [
+    { href: `/${lang}/catalog`, label: n.catalog },
+    { href: `/${lang}/about`, label: n.about },
+    { href: `/${lang}/contacts`, label: n.contacts },
+  ]
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-border shadow-sm">
+    <header className="sticky top-0 z-50 bg-[#080808] border-b border-[#222222]">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href={`/${lang}`} className="flex items-center gap-2 shrink-0">
-          <span className="text-accent font-heading font-bold text-2xl tracking-tight">Man</span>
-          <span className="text-foreground font-heading font-bold text-2xl tracking-tight">Prime</span>
+
+        {/* Logo */}
+        <Link href={`/${lang}`} className="flex flex-col items-start shrink-0 group">
+          <span className="text-[#C9A84C] font-heading font-black text-lg tracking-[0.15em] leading-none group-hover:text-[#E0BB5F] transition-colors">
+            MANPRIME
+          </span>
+          <span className="text-[#555] text-[8px] font-medium tracking-[0.35em] leading-none mt-0.5">
+            STORE
+          </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href={`/${lang}`} className="hover:text-accent transition-colors">{n.home}</Link>
-          <Link href={`/${lang}/catalog`} className="hover:text-accent transition-colors">{n.catalog}</Link>
-          <Link href={`/${lang}/about`} className="hover:text-accent transition-colors">{n.about}</Link>
-          <Link href={`/${lang}/contacts`} className="hover:text-accent transition-colors">{n.contacts}</Link>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="relative text-[#9CA3AF] hover:text-white text-sm font-medium tracking-wide transition-colors group"
+            >
+              {label}
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#C9A84C] group-hover:w-full transition-all duration-300" />
+            </Link>
+          ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
-          <div className="flex gap-1 text-xs">
+        {/* Right section */}
+        <div className="hidden md:flex items-center gap-5">
+          <div className="flex gap-1.5">
             {langs.map((l) => (
               <Link
                 key={l}
                 href={`/${l}`}
-                className={`px-2 py-1 rounded transition-colors ${l === lang ? 'bg-accent text-white' : 'hover:text-accent'}`}
+                className={`text-[10px] font-semibold tracking-widest px-2 py-0.5 rounded transition-colors ${
+                  l === lang
+                    ? 'text-[#C9A84C] border border-[#C9A84C]/40'
+                    : 'text-[#555] hover:text-[#9CA3AF]'
+                }`}
               >
                 {langLabels[l]}
               </Link>
             ))}
           </div>
-          <Link
-            href={`/${lang}/cart`}
-            className="relative p-2 hover:text-accent transition-colors"
-            aria-label={n.cart}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </Link>
+
           <Link
             href={`/${lang}/auth`}
-            className="bg-accent hover:bg-accent-hover text-white text-sm font-medium px-4 py-2 rounded-full transition-colors"
+            aria-label="Account"
+            className="text-[#C9A84C] hover:text-[#E0BB5F] transition-colors"
           >
-            {n.login}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </Link>
+
+          <Link
+            href={`/${lang}/cart`}
+            aria-label={n.cart}
+            className="text-[#C9A84C] hover:text-[#E0BB5F] transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
           </Link>
         </div>
 
+        {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 text-[#9CA3AF] hover:text-white transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -77,24 +109,48 @@ export default function Header({ dict, lang }: HeaderProps) {
         </button>
       </div>
 
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-border px-4 py-4 flex flex-col gap-4">
-          <Link href={`/${lang}`} onClick={() => setMenuOpen(false)} className="hover:text-accent">{n.home}</Link>
-          <Link href={`/${lang}/catalog`} onClick={() => setMenuOpen(false)} className="hover:text-accent">{n.catalog}</Link>
-          <Link href={`/${lang}/about`} onClick={() => setMenuOpen(false)} className="hover:text-accent">{n.about}</Link>
-          <Link href={`/${lang}/contacts`} onClick={() => setMenuOpen(false)} className="hover:text-accent">{n.contacts}</Link>
-          <Link href={`/${lang}/cart`} onClick={() => setMenuOpen(false)} className="hover:text-accent">{n.cart}</Link>
-          <Link href={`/${lang}/auth`} onClick={() => setMenuOpen(false)} className="bg-accent text-white px-4 py-2 rounded-full text-center">{n.login}</Link>
-          <div className="flex gap-2 text-sm pt-2 border-t border-border">
-            {langs.map((l) => (
-              <Link
-                key={l}
-                href={`/${l}`}
-                className={`px-3 py-1 rounded ${l === lang ? 'bg-accent text-white' : 'border border-border hover:text-accent'}`}
-              >
-                {langLabels[l]}
-              </Link>
-            ))}
+        <div className="md:hidden bg-[#0F0F0F] border-t border-[#222222] px-5 py-6 flex flex-col gap-5">
+          <Link href={`/${lang}`} onClick={() => setMenuOpen(false)} className="text-[#9CA3AF] hover:text-white text-sm font-medium tracking-wide transition-colors">
+            {n.home}
+          </Link>
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              className="text-[#9CA3AF] hover:text-white text-sm font-medium tracking-wide transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+          <div className="flex gap-3 items-center pt-2 border-t border-[#222222]">
+            <Link href={`/${lang}/cart`} onClick={() => setMenuOpen(false)} className="text-[#C9A84C] hover:text-[#E0BB5F] transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </Link>
+            <Link href={`/${lang}/auth`} onClick={() => setMenuOpen(false)} className="text-[#C9A84C] hover:text-[#E0BB5F] transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </Link>
+            <div className="flex gap-1.5 ml-auto">
+              {langs.map((l) => (
+                <Link
+                  key={l}
+                  href={`/${l}`}
+                  className={`text-[10px] font-semibold tracking-widest px-2 py-0.5 rounded transition-colors ${
+                    l === lang ? 'text-[#C9A84C] border border-[#C9A84C]/40' : 'text-[#555] hover:text-[#9CA3AF]'
+                  }`}
+                >
+                  {langLabels[l]}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       )}

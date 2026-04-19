@@ -1,27 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAF6F0;
-  --foreground: #1A2340;
-  --accent: #FF6B00;
-  --accent-hover: #E55F00;
-  --cream: #FAF6F0;
-  --white: #FFFFFF;
-  --card: #FFFFFF;
-  --muted: #8A8A9A;
-  --border: #E8E0D5;
+  --background: #0A0A0A;
+  --surface: #141414;
+  --graphite: #1E1E1E;
+  --gold: #C9A84C;
+  --gold-hover: #E0BB5F;
+  --burgundy: #A52A2A;
+  --burgundy-hover: #C03333;
+  --foreground: #FFFFFF;
+  --muted: #9CA3AF;
+  --border: #2A2A2A;
+  --accent: #C9A84C;
+  --accent-hover: #E0BB5F;
+  --cream: #141414;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-graphite: var(--graphite);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-hover: var(--burgundy-hover);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-cream: var(--cream);
-  --color-card: var(--card);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --font-heading: var(--font-playfair);
+  --font-heading: var(--font-montserrat);
   --font-sans: var(--font-inter);
 }
 
@@ -32,5 +41,5 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-montserrat), Arial, sans-serif;
 }

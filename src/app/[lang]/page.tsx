@@ -1,21 +1,29 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ lang: Locale }>
-}) {
+const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
+const BADGES: Record<string, string> = { classic: 'TOP', forte: 'TOP', longevity: 'NEW' }
+
+const FALLBACK_PRODUCTS = [
+  { id: '1', slug: 'classic', nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic', descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я.', descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.', descEn: 'Basic complex for potency and men\'s health.', compUk: '', compRu: '', compEn: '', price: 890, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+  { id: '2', slug: 'forte', nameUk: 'ManPrime Forte', nameRu: 'ManPrime Forte', nameEn: 'ManPrime Forte', descUk: 'Посилена формула для максимальної підтримки тестостерону.', descRu: 'Усиленная формула для максимальной поддержки тестостерона.', descEn: 'Enhanced formula for maximum testosterone support.', compUk: '', compRu: '', compEn: '', price: 1290, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+  { id: '3', slug: 'longevity', nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity', descUk: 'Комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.', descRu: 'Комплекс для мужчин 40+ — здоровье, энергия и долголетие.', descEn: 'Complex for men 40+ — health, energy and longevity.', compUk: '', compRu: '', compEn: '', price: 1490, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+]
+
+export default async function HomePage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
   const dict = await getDictionary(lang)
 
-  const products: Product[] = await prisma.product.findMany({
+  const dbProducts: Product[] = await prisma.product.findMany({
     where: { isActive: true },
     take: 3,
     orderBy: { createdAt: 'asc' },
   }).catch(() => [] as Product[])
+
+  const products = dbProducts.length > 0 ? dbProducts : FALLBACK_PRODUCTS as unknown as Product[]
 
   const nameKey = `name${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'nameUk' | 'nameRu' | 'nameEn'
   const descKey = `desc${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'descUk' | 'descRu' | 'descEn'
@@ -23,167 +31,170 @@ export default async function HomePage({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-cream">
-        <div className="absolute inset-0 bg-gradient-to-br from-cream via-white to-orange-50 opacity-80" />
-        <div className="relative max-w-6xl mx-auto px-4 py-24 md:py-32 flex flex-col md:flex-row items-center gap-12">
-          <div className="flex-1 text-center md:text-left">
-            <div className="inline-block bg-accent/10 text-accent text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-6">
-              ManPrime
+      <section className="relative overflow-hidden bg-[#080808]">
+        <div className="absolute inset-0 bg-linear-to-br from-[#0D0D0D] via-[#0A0A0A] to-[#050505]" />
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: 'repeating-linear-gradient(45deg, #C9A84C 0, #C9A84C 1px, transparent 0, transparent 50%)', backgroundSize: '30px 30px' }}
+        />
+        <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+          <div className="text-center md:text-left order-2 md:order-1">
+            <div className="inline-flex items-center gap-2 border border-[#C9A84C]/30 text-[#C9A84C] text-[10px] font-semibold uppercase tracking-[0.3em] px-4 py-2 mb-8">
+              ManPrime Store
             </div>
-            <h1 className="font-heading text-4xl md:text-6xl font-bold text-foreground leading-tight mb-4">
+            <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl text-white uppercase leading-[1.05] tracking-tight mb-6">
               {dict.hero.title}
               <br />
-              <span className="text-accent">{dict.hero.titleAccent}</span>
+              <span className="text-[#C9A84C]">{dict.hero.titleAccent}</span>
             </h1>
-            <p className="text-muted text-lg md:text-xl max-w-lg mb-8 leading-relaxed">
+            <p className="text-[#9CA3AF] text-base md:text-lg leading-relaxed mb-10 max-w-md mx-auto md:mx-0">
               {dict.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Link
                 href={`/${lang}/catalog`}
-                className="bg-accent hover:bg-accent-hover text-white font-semibold px-8 py-4 rounded-full transition-colors text-center shadow-lg shadow-accent/25"
+                className="bg-[#A52A2A] hover:bg-[#C03333] text-white font-heading font-bold px-10 py-4 uppercase tracking-widest text-sm transition-all duration-300 hover:shadow-[0_0_20px_rgba(165,42,42,0.4)]"
               >
                 {dict.hero.cta}
               </Link>
               <Link
                 href={`/${lang}/about`}
-                className="border-2 border-foreground/20 hover:border-accent text-foreground hover:text-accent font-semibold px-8 py-4 rounded-full transition-colors text-center"
+                className="border border-[#2A2A2A] hover:border-[#C9A84C]/50 text-[#9CA3AF] hover:text-[#C9A84C] font-medium px-10 py-4 uppercase tracking-widest text-sm transition-colors"
               >
                 {dict.hero.ctaSecondary}
               </Link>
             </div>
           </div>
-          <div className="flex-1 flex justify-center">
-            <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-accent/20 to-orange-200 flex items-center justify-center">
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-accent/30 to-orange-300 flex items-center justify-center">
-                <svg className="w-24 h-24 md:w-32 md:h-32 text-accent" fill="currentColor" viewBox="0 0 100 100">
-                  <path d="M50 10 L60 35 L87 35 L65 55 L73 80 L50 65 L27 80 L35 55 L13 35 L40 35 Z" />
-                </svg>
-              </div>
+
+          <div className="order-1 md:order-2 flex justify-center">
+            <div className="relative w-full max-w-sm md:max-w-full">
+              <Image
+                src="/hero-banner.png"
+                alt="ManPrime — чоловіче здоров'я"
+                width={580}
+                height={435}
+                className="w-full h-auto object-cover rounded-sm shadow-2xl shadow-black/60"
+                priority
+              />
+              <div className="absolute inset-0 rounded-sm ring-1 ring-[#C9A84C]/10" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-12">
-            {dict.features.title}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { key: 'natural', icon: '🌿' },
-              { key: 'certified', icon: '✅' },
-              { key: 'delivery', icon: '🚚' },
-              { key: 'privacy', icon: '🔒' },
-            ].map(({ key, icon }) => {
-              const f = dict.features[key as keyof typeof dict.features] as { title: string; desc: string }
-              return (
-                <div key={key} className="bg-cream rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
-                  <div className="text-4xl mb-4">{icon}</div>
-                  <h3 className="font-heading font-semibold text-lg mb-2">{f.title}</h3>
-                  <p className="text-muted text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              )
-            })}
-          </div>
+      {/* Trust block */}
+      <section className="bg-[#111111] border-y border-[#1E1E1E]">
+        <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
+          {[
+            { icon: '🌿', title: '100% НАТУРАЛЬНО', desc: 'Тільки перевірені компоненти без хімії' },
+            { icon: '🔒', title: 'КОНФІДЕНЦІЙНІСТЬ', desc: 'Анонімна упаковка та доставка' },
+            { icon: '⚡', title: 'ГАРАНТІЯ ЕФЕКТУ', desc: 'Клінічно підтверджений результат' },
+          ].map(({ icon, title, desc }) => (
+            <div key={title} className="flex flex-col items-center text-center gap-3">
+              <span className="text-3xl">{icon}</span>
+              <h3 className="text-[#C9A84C] font-heading font-bold text-sm tracking-widest uppercase">{title}</h3>
+              <p className="text-[#555] text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Products */}
-      <section className="py-20 bg-cream">
+      <section className="py-20 bg-linear-to-b from-[#0D0D0D] to-[#0A0A0A]">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">{dict.products.title}</h2>
-            <p className="text-muted text-lg">{dict.products.subtitle}</p>
+          <div className="text-center mb-14">
+            <p className="text-[#C9A84C] text-xs font-semibold tracking-[0.4em] uppercase mb-3">Наші комплекси</p>
+            <h2 className="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">
+              {dict.products.title}
+            </h2>
           </div>
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {products.map((product) => (
-                <div key={product.id} className="bg-white rounded-3xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
-                  <div className="aspect-square bg-gradient-to-br from-cream to-orange-50 flex items-center justify-center">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {products.map((product) => {
+              const oldPrice = OLD_PRICES[product.slug]
+              const badge = BADGES[product.slug]
+              return (
+                <div key={product.id} className="bg-[#111111] border border-[#1E1E1E] hover:border-[#C9A84C]/30 transition-all duration-300 group flex flex-col">
+                  <div className="relative aspect-square bg-linear-to-b from-[#1A1A1A] to-[#0F0F0F] flex items-center justify-center overflow-hidden">
+                    {badge && (
+                      <span className="absolute top-3 left-3 bg-[#C9A84C] text-black text-[10px] font-black tracking-widest uppercase px-2.5 py-1">
+                        {badge}
+                      </span>
+                    )}
                     {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
+                      <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
-                      <div className="text-6xl">💊</div>
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-24 h-24 rounded-full bg-[#1E1E1E] border border-[#2A2A2A] flex items-center justify-center">
+                          <span className="text-4xl">💊</span>
+                        </div>
+                        <div className="w-16 h-1 bg-linear-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
+                      </div>
                     )}
                   </div>
                   <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-heading font-bold text-xl mb-2">{product[nameKey]}</h3>
-                    <p className="text-muted text-sm mb-4 flex-1 line-clamp-3">{product[descKey]}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-2xl text-accent">
-                        {product.price} {dict.products.uah}
+                    <h3 className="font-heading font-bold text-white text-lg mb-2 tracking-wide">{product[nameKey]}</h3>
+                    <p className="text-[#555] text-sm leading-relaxed mb-5 flex-1">{product[descKey]}</p>
+                    <div className="flex items-end justify-between mb-4">
+                      <div>
+                        {oldPrice && (
+                          <span className="block text-[#444] text-sm line-through mb-0.5">{oldPrice} {dict.products.uah}</span>
+                        )}
+                        <span className="text-[#C9A84C] font-black text-2xl">{product.price}</span>
+                        <span className="text-[#555] text-sm ml-1">{dict.products.uah}</span>
+                      </div>
+                      <span className="text-[10px] text-[#3A7A3A] font-medium uppercase tracking-wider">
+                        {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
                       </span>
+                    </div>
+                    <div className="flex gap-2">
                       <Link
                         href={`/${lang}/product/${product.slug}`}
-                        className="bg-accent hover:bg-accent-hover text-white text-sm font-medium px-5 py-2.5 rounded-full transition-colors"
+                        className="flex-1 border border-[#2A2A2A] hover:border-[#C9A84C]/40 text-[#9CA3AF] hover:text-[#C9A84C] text-sm font-medium py-3 text-center transition-colors"
                       >
-                        {dict.products.buy_now}
+                        {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'}
                       </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { name: 'ManPrime Classic', desc: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я', price: 890 },
-                { name: 'ManPrime Forte', desc: 'Посилена формула + підтримка рівня тестостерону', price: 1290 },
-                { name: 'ManPrime Longevity', desc: 'Комплекс для здоров\'я та довголіття 40+', price: 1490 },
-              ].map((p) => (
-                <div key={p.name} className="bg-white rounded-3xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
-                  <div className="aspect-square bg-gradient-to-br from-cream to-orange-50 flex items-center justify-center">
-                    <div className="text-6xl">💊</div>
-                  </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-heading font-bold text-xl mb-2">{p.name}</h3>
-                    <p className="text-muted text-sm mb-4 flex-1">{p.desc}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-2xl text-accent">{p.price} {dict.products.uah}</span>
                       <Link
-                        href={`/${lang}/catalog`}
-                        className="bg-accent hover:bg-accent-hover text-white text-sm font-medium px-5 py-2.5 rounded-full transition-colors"
+                        href={`/${lang}/checkout?product=${product.slug}`}
+                        className="flex-1 bg-[#A52A2A] hover:bg-[#C03333] text-white text-sm font-bold py-3 text-center uppercase tracking-wider transition-colors"
                       >
                         {dict.products.buy_now}
                       </Link>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              )
+            })}
+          </div>
+
           <div className="text-center mt-10">
             <Link
               href={`/${lang}/catalog`}
-              className="border-2 border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-3 rounded-full transition-colors"
+              className="inline-flex items-center gap-2 border border-[#2A2A2A] hover:border-[#C9A84C]/40 text-[#9CA3AF] hover:text-[#C9A84C] font-medium px-8 py-3 text-sm uppercase tracking-widest transition-colors"
             >
-              {dict.products.title} →
+              {lang === 'uk' ? 'Всі товари' : lang === 'ru' ? 'Все товары' : 'All products'} →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Delivery Banner */}
-      <section className="bg-foreground text-white py-16">
+      {/* Delivery */}
+      <section className="bg-[#0D0D0D] border-t border-[#1A1A1A] py-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl font-bold mb-4">{dict.delivery_info.title}</h2>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">{dict.delivery_info.text}</p>
-          <div className="flex justify-center gap-8 mt-8">
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-3xl">📦</span>
-              <span className="text-sm text-white/60">Нова Пошта</span>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-3xl">✉️</span>
-              <span className="text-sm text-white/60">Укрпошта</span>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-3xl">📍</span>
-              <span className="text-sm text-white/60">По всій Україні</span>
-            </div>
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-white uppercase tracking-tight mb-4">
+            {dict.delivery_info.title}
+          </h2>
+          <p className="text-[#555] text-base max-w-xl mx-auto mb-10">{dict.delivery_info.text}</p>
+          <div className="flex justify-center gap-12">
+            {[
+              { icon: '📦', label: 'Нова Пошта' },
+              { icon: '✉️', label: 'Укрпошта' },
+              { icon: '📍', label: 'По всій Україні' },
+            ].map(({ icon, label }) => (
+              <div key={label} className="flex flex-col items-center gap-2">
+                <span className="text-2xl">{icon}</span>
+                <span className="text-[#444] text-xs uppercase tracking-wider">{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
