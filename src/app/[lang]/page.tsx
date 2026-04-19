@@ -5,7 +5,11 @@ import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 
 const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
-const BADGES: Record<string, string> = { classic: 'TOP', forte: 'TOP', longevity: 'NEW' }
+const BADGES: Record<string, { label: string; color: 'gold' | 'amber' }> = {
+  classic: { label: 'TOP', color: 'gold' },
+  forte: { label: 'TOP', color: 'gold' },
+  longevity: { label: 'NEW', color: 'amber' },
+}
 
 const FALLBACK_PRODUCTS = [
   { id: '1', slug: 'classic', nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic', descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я.', descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.', descEn: 'Basic complex for potency and men\'s health.', compUk: '', compRu: '', compEn: '', price: 890, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
@@ -31,34 +35,31 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#080808]">
-        <div className="absolute inset-0 bg-linear-to-br from-[#0D0D0D] via-[#0A0A0A] to-[#050505]" />
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'repeating-linear-gradient(45deg, #C9A84C 0, #C9A84C 1px, transparent 0, transparent 50%)', backgroundSize: '30px 30px' }}
-        />
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-r from-[#1a365d] via-[#1e3a6e]/90 to-[#f0f4f8]" />
         <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div className="text-center md:text-left order-2 md:order-1">
-            <div className="inline-flex items-center gap-2 border border-[#C9A84C]/30 text-[#C9A84C] text-[10px] font-semibold uppercase tracking-[0.3em] px-4 py-2 mb-8">
+            <div className="inline-flex items-center gap-2 border border-[#c9a84c]/40 text-[#c9a84c] text-[10px] font-semibold uppercase tracking-[0.3em] px-4 py-2 mb-8">
               ManPrime Store
             </div>
-            <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl text-white uppercase leading-[1.05] tracking-tight mb-6">
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl text-white uppercase leading-[1.05] tracking-tight mb-6">
               {dict.hero.title}
               <br />
-              <span className="text-[#C9A84C]">{dict.hero.titleAccent}</span>
+              <span className="text-[#c9a84c]">{dict.hero.titleAccent}</span>
             </h1>
-            <p className="text-[#9CA3AF] text-base md:text-lg leading-relaxed mb-10 max-w-md mx-auto md:mx-0">
+            <p className="text-[#a0c4e8] text-base md:text-lg leading-relaxed mb-10 max-w-md mx-auto md:mx-0">
               {dict.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Link
                 href={`/${lang}/catalog`}
-                className="bg-[#A52A2A] hover:bg-[#C03333] text-white font-heading font-bold px-10 py-4 uppercase tracking-widest text-sm transition-all duration-300 hover:shadow-[0_0_20px_rgba(165,42,42,0.4)]"
+                className="bg-[#c05621] hover:bg-[#9c4221] text-white font-heading px-10 py-4 uppercase tracking-widest text-sm transition-all duration-300 hover:shadow-lg"
               >
                 {dict.hero.cta}
               </Link>
               <Link
                 href={`/${lang}/about`}
-                className="border border-[#2A2A2A] hover:border-[#C9A84C]/50 text-[#9CA3AF] hover:text-[#C9A84C] font-medium px-10 py-4 uppercase tracking-widest text-sm transition-colors"
+                className="border border-white/30 hover:border-[#c9a84c]/60 text-white hover:text-[#c9a84c] font-medium px-10 py-4 uppercase tracking-widest text-sm transition-colors"
               >
                 {dict.hero.ctaSecondary}
               </Link>
@@ -72,17 +73,17 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
                 alt="ManPrime — чоловіче здоров'я"
                 width={580}
                 height={435}
-                className="w-full h-auto object-cover rounded-sm shadow-2xl shadow-black/60"
+                className="w-full h-auto object-cover rounded-sm shadow-2xl"
                 priority
               />
-              <div className="absolute inset-0 rounded-sm ring-1 ring-[#C9A84C]/10" />
+              <div className="absolute inset-0 rounded-sm ring-1 ring-[#c9a84c]/20" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Trust block */}
-      <section className="bg-[#111111] border-y border-[#1E1E1E]">
+      <section className="bg-white border-y border-[#e2e8f0]">
         <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {[
             { icon: '🌿', title: '100% НАТУРАЛЬНО', desc: 'Тільки перевірені компоненти без хімії' },
@@ -91,19 +92,19 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
           ].map(({ icon, title, desc }) => (
             <div key={title} className="flex flex-col items-center text-center gap-3">
               <span className="text-3xl">{icon}</span>
-              <h3 className="text-[#C9A84C] font-heading font-bold text-sm tracking-widest uppercase">{title}</h3>
-              <p className="text-[#555] text-sm leading-relaxed">{desc}</p>
+              <h3 className="text-[#c9a84c] font-heading text-sm tracking-widest uppercase">{title}</h3>
+              <p className="text-[#718096] text-sm leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Products */}
-      <section className="py-20 bg-linear-to-b from-[#0D0D0D] to-[#0A0A0A]">
+      <section className="py-20 bg-[#f0f4f8]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-14">
-            <p className="text-[#C9A84C] text-xs font-semibold tracking-[0.4em] uppercase mb-3">Наші комплекси</p>
-            <h2 className="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">
+            <p className="text-[#c9a84c] text-xs font-semibold tracking-[0.4em] uppercase mb-3">Наші комплекси</p>
+            <h2 className="font-heading text-3xl md:text-4xl text-[#1a365d] uppercase tracking-tight">
               {dict.products.title}
             </h2>
           </div>
@@ -113,49 +114,61 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
               const oldPrice = OLD_PRICES[product.slug]
               const badge = BADGES[product.slug]
               return (
-                <div key={product.id} className="bg-[#111111] border border-[#1E1E1E] hover:border-[#C9A84C]/30 transition-all duration-300 group flex flex-col">
-                  <div className="relative aspect-square bg-linear-to-b from-[#1A1A1A] to-[#0F0F0F] flex items-center justify-center overflow-hidden">
+                <div
+                  key={product.id}
+                  className="bg-white border border-[#e2e8f0] hover:border-[#1a365d]/30 hover:-translate-y-1 transition-all duration-300 group flex flex-col shadow-sm hover:shadow-md"
+                >
+                  <div className="relative h-50 bg-[#edf2f7] flex items-center justify-center overflow-hidden">
                     {badge && (
-                      <span className="absolute top-3 left-3 bg-[#C9A84C] text-black text-[10px] font-black tracking-widest uppercase px-2.5 py-1">
-                        {badge}
+                      <span className={`absolute top-3 left-3 text-[10px] font-black tracking-widest uppercase px-2.5 py-1 rounded-md z-10 ${
+                        badge.color === 'gold'
+                          ? 'bg-[#c9a84c] text-[#1a365d]'
+                          : 'bg-[#c05621] text-white'
+                      }`}>
+                        {badge.label}
                       </span>
                     )}
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-24 h-24 rounded-full bg-[#1E1E1E] border border-[#2A2A2A] flex items-center justify-center">
+                        <div className="w-24 h-24 rounded-full bg-white border border-[#e2e8f0] flex items-center justify-center">
                           <span className="text-4xl">💊</span>
                         </div>
-                        <div className="w-16 h-1 bg-linear-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
+                        <div className="w-16 h-px bg-linear-to-r from-transparent via-[#c9a84c]/40 to-transparent" />
                       </div>
                     )}
                   </div>
                   <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-heading font-bold text-white text-lg mb-2 tracking-wide">{product[nameKey]}</h3>
-                    <p className="text-[#555] text-sm leading-relaxed mb-5 flex-1">{product[descKey]}</p>
-                    <div className="flex items-end justify-between mb-4">
-                      <div>
-                        {oldPrice && (
-                          <span className="block text-[#444] text-sm line-through mb-0.5">{oldPrice} {dict.products.uah}</span>
-                        )}
-                        <span className="text-[#C9A84C] font-black text-2xl">{product.price}</span>
-                        <span className="text-[#555] text-sm ml-1">{dict.products.uah}</span>
+                    <h3 className="font-heading text-[#1a365d] text-xl mb-2 tracking-wide">{product[nameKey]}</h3>
+                    <p className="text-[#718096] text-sm leading-relaxed mb-4 flex-1 line-clamp-2">{product[descKey]}</p>
+                    <div className="border-t border-[#e2e8f0] pt-4 mb-4">
+                      <div className="flex items-end justify-between">
+                        <div>
+                          {oldPrice && (
+                            <span className="block text-[#a0aec0] text-sm line-through mb-0.5">{oldPrice} {dict.products.uah}</span>
+                          )}
+                          <span className="text-[#c9a84c] font-black text-2xl">{product.price}</span>
+                          <span className="text-[#718096] text-sm ml-1">{dict.products.uah}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#48bb78]" />
+                          <span className="text-[10px] text-[#718096] uppercase tracking-wider">
+                            {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
+                          </span>
+                        </div>
                       </div>
-                      <span className="text-[10px] text-[#3A7A3A] font-medium uppercase tracking-wider">
-                        {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
-                      </span>
                     </div>
                     <div className="flex gap-2">
                       <Link
                         href={`/${lang}/product/${product.slug}`}
-                        className="flex-1 border border-[#2A2A2A] hover:border-[#C9A84C]/40 text-[#9CA3AF] hover:text-[#C9A84C] text-sm font-medium py-3 text-center transition-colors"
+                        className="flex-1 border border-[#cbd5e0] hover:border-[#1a365d] text-[#718096] hover:text-[#1a365d] text-sm font-medium py-3 text-center transition-colors rounded-sm"
                       >
                         {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'}
                       </Link>
                       <Link
                         href={`/${lang}/checkout?product=${product.slug}`}
-                        className="flex-1 bg-[#A52A2A] hover:bg-[#C03333] text-white text-sm font-bold py-3 text-center uppercase tracking-wider transition-colors"
+                        className="flex-1 bg-[#c05621] hover:bg-[#9c4221] text-white text-sm font-bold py-3 text-center uppercase tracking-wider transition-colors rounded-sm"
                       >
                         {dict.products.buy_now}
                       </Link>
@@ -169,7 +182,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
           <div className="text-center mt-10">
             <Link
               href={`/${lang}/catalog`}
-              className="inline-flex items-center gap-2 border border-[#2A2A2A] hover:border-[#C9A84C]/40 text-[#9CA3AF] hover:text-[#C9A84C] font-medium px-8 py-3 text-sm uppercase tracking-widest transition-colors"
+              className="inline-flex items-center gap-2 border border-[#cbd5e0] hover:border-[#1a365d] text-[#718096] hover:text-[#1a365d] font-medium px-8 py-3 text-sm uppercase tracking-widest transition-colors"
             >
               {lang === 'uk' ? 'Всі товари' : lang === 'ru' ? 'Все товары' : 'All products'} →
             </Link>
@@ -178,12 +191,12 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
       </section>
 
       {/* Delivery */}
-      <section className="bg-[#0D0D0D] border-t border-[#1A1A1A] py-16">
+      <section className="bg-white border-t border-[#e2e8f0] py-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-white uppercase tracking-tight mb-4">
+          <h2 className="font-heading text-2xl md:text-3xl text-[#1a365d] uppercase tracking-tight mb-4">
             {dict.delivery_info.title}
           </h2>
-          <p className="text-[#555] text-base max-w-xl mx-auto mb-10">{dict.delivery_info.text}</p>
+          <p className="text-[#718096] text-base max-w-xl mx-auto mb-10">{dict.delivery_info.text}</p>
           <div className="flex justify-center gap-12">
             {[
               { icon: '📦', label: 'Нова Пошта' },
@@ -192,7 +205,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
             ].map(({ icon, label }) => (
               <div key={label} className="flex flex-col items-center gap-2">
                 <span className="text-2xl">{icon}</span>
-                <span className="text-[#444] text-xs uppercase tracking-wider">{label}</span>
+                <span className="text-[#718096] text-xs uppercase tracking-wider">{label}</span>
               </div>
             ))}
           </div>
