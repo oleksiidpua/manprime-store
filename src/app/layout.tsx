@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
+  title: "ManPrime Store — Натуральні БАДи для чоловічого здоров'я",
   description: "ManPrime — натуральні добавки для потенції, чоловічого здоров'я та довголіття. Доставка по всій Україні.",
 };
 
