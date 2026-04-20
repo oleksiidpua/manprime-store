@@ -19,7 +19,7 @@ export function proxy(request: NextRequest) {
 
   if (pathnameHasLocale) return NextResponse.next()
 
-  if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.includes('.')) {
+  if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.startsWith('/admin') || pathname.includes('.')) {
     return NextResponse.next()
   }
 
