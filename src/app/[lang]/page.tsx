@@ -55,7 +55,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
     <>
       {/* HERO — temporary static, animated sachet coming in phase 4 */}
       <section className="relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full bg-copper/10 blur-[120px] pointer-events-none" />
+        {/* Subtle deep glow — green-on-green, no yellow tint */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full bg-surface-2/40 blur-[140px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-5 md:px-8 pt-20 md:pt-28 pb-24 md:pb-32 text-center">
           <span className="inline-block text-copper text-[11px] font-medium tracking-[0.3em] uppercase mb-8">
@@ -66,7 +67,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
             {lang === 'uk' ? (
               <>Сила, яку ти<br /><em className="italic text-copper font-normal">відчуєш</em> щодня</>
             ) : lang === 'ru' ? (
-              <>Сила, которую<br />ты <em className="italic text-copper font-normal">почувствуешь</em> каждый день</>
+              <>Сила, которую<br /><em className="italic text-copper font-normal">чувствуешь</em> каждый день</>
             ) : (
               <>The strength you<br /><em className="italic text-copper font-normal">feel</em> every day</>
             )}
