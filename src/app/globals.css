@@ -1,47 +1,93 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0f1a;
-  --surface: #111827;
-  --graphite: #1c2333;
-  --gold: #c9a84c;
-  --gold-hover: #e0bb5f;
-  --amber: #b5622a;
-  --amber-hover: #cc7033;
-  --foreground: #e8eaf0;
-  --muted: #8b9ab0;
-  --border: #2a3347;
-  --brown: #8b6f47;
-  --accent: #c9a84c;
-  --cream: #111827;
+  /* Deep Forest palette */
+  --background: #0F1F1A;
+  --surface: #142A23;
+  --surface-2: #1A352C;
+  --foreground: #F5F0E6;
+  --muted: #A8A095;
+  --muted-2: #7A786E;
+  --border: #2A4035;
+  --border-2: #3A5145;
+
+  /* Copper accent */
+  --copper: #B87333;
+  --copper-hover: #D08A47;
+  --copper-glow: rgba(184, 115, 51, 0.4);
+  --copper-soft: rgba(184, 115, 51, 0.12);
+
+  /* Brass / honey */
+  --brass: #C9A96E;
+  --honey: #E4A04E;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
-  --color-graphite: var(--graphite);
-  --color-gold: var(--gold);
-  --color-gold-hover: var(--gold-hover);
-  --color-amber: var(--amber);
-  --color-amber-hover: var(--amber-hover);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
   --color-border: var(--border);
-  --color-brown: var(--brown);
-  --color-accent: var(--accent);
-  --color-cream: var(--cream);
-  --font-heading: var(--font-bebas), var(--font-montserrat);
-  --font-sans: var(--font-montserrat);
+  --color-border-2: var(--border-2);
+  --color-copper: var(--copper);
+  --color-copper-hover: var(--copper-hover);
+  --color-brass: var(--brass);
+  --color-honey: var(--honey);
+  --font-serif: var(--font-lora);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-lora);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-montserrat), Arial, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
   line-height: 1.65;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-bebas), var(--font-montserrat), Arial, sans-serif;
-  letter-spacing: 0.05em;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-lora), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+/* Selection */
+::selection {
+  background: var(--copper);
+  color: var(--background);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus rings */
+:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Subtle noise texture for depth (optional, very low opacity) */
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

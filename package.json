@@ -16,6 +16,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.20.0",
     "bcryptjs": "^3.0.3",
+    "framer-motion": "^12.38.0",
     "next": "16.2.4",
     "next-auth": "^4.24.14",
     "next-intl": "^4.9.1",

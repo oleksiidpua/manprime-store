@@ -1,219 +1,261 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 
-const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
-const BADGES: Record<string, { label: string; color: 'gold' | 'brown' }> = {
-  classic: { label: 'TOP', color: 'gold' },
-  forte: { label: 'TOP', color: 'gold' },
-  longevity: { label: 'NEW', color: 'brown' },
-}
-
-const FALLBACK_PRODUCTS = [
-  { id: '1', slug: 'classic', nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic', descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я.', descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.', descEn: 'Basic complex for potency and men\'s health.', compUk: '', compRu: '', compEn: '', price: 890, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
-  { id: '2', slug: 'forte', nameUk: 'ManPrime Forte', nameRu: 'ManPrime Forte', nameEn: 'ManPrime Forte', descUk: 'Посилена формула для максимальної підтримки тестостерону.', descRu: 'Усиленная формула для максимальной поддержки тестостерона.', descEn: 'Enhanced formula for maximum testosterone support.', compUk: '', compRu: '', compEn: '', price: 1290, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
-  { id: '3', slug: 'longevity', nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity', descUk: 'Комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.', descRu: 'Комплекс для мужчин 40+ — здоровье, энергия и долголетие.', descEn: 'Complex for men 40+ — health, energy and longevity.', compUk: '', compRu: '', compEn: '', price: 1490, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
+const FALLBACK_PRODUCTS: Product[] = [
+  {
+    id: '1', slug: 'classic',
+    nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic',
+    descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я.',
+    descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.',
+    descEn: 'Basic complex for potency and men\'s health.',
+    compUk: '', compRu: '', compEn: '',
+    price: 890, imageUrl: null, stock: 100, isActive: true,
+    createdAt: new Date(), updatedAt: new Date(),
+  },
+  {
+    id: '2', slug: 'forte',
+    nameUk: 'ManPrime Forte', nameRu: 'ManPrime Forte', nameEn: 'ManPrime Forte',
+    descUk: 'Посилена формула для максимальної підтримки тестостерону.',
+    descRu: 'Усиленная формула для максимальной поддержки тестостерона.',
+    descEn: 'Enhanced formula for maximum testosterone support.',
+    compUk: '', compRu: '', compEn: '',
+    price: 1290, imageUrl: null, stock: 100, isActive: true,
+    createdAt: new Date(), updatedAt: new Date(),
+  },
+  {
+    id: '3', slug: 'longevity',
+    nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity',
+    descUk: 'Комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.',
+    descRu: 'Комплекс для мужчин 40+ — здоровье, энергия и долголетие.',
+    descEn: 'Complex for men 40+ — health, energy and longevity.',
+    compUk: '', compRu: '', compEn: '',
+    price: 1490, imageUrl: null, stock: 100, isActive: true,
+    createdAt: new Date(), updatedAt: new Date(),
+  },
 ]
 
 export default async function HomePage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
   const dict = await getDictionary(lang)
 
-  const dbProducts: Product[] = await prisma.product.findMany({
+  const dbProducts = await prisma.product.findMany({
     where: { isActive: true },
     take: 3,
     orderBy: { createdAt: 'asc' },
   }).catch(() => [] as Product[])
 
-  const products = dbProducts.length > 0 ? dbProducts : FALLBACK_PRODUCTS as unknown as Product[]
+  const products = dbProducts.length > 0 ? dbProducts : FALLBACK_PRODUCTS
 
-  const nameKey = `name${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'nameUk' | 'nameRu' | 'nameEn'
-  const descKey = `desc${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'descUk' | 'descRu' | 'descEn'
+  const nameKey = `name${cap(lang)}` as 'nameUk' | 'nameRu' | 'nameEn'
+  const descKey = `desc${cap(lang)}` as 'descUk' | 'descRu' | 'descEn'
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#0b0f1a]">
-        <div className="absolute inset-0 bg-linear-to-br from-[#0f1525] via-[#0b0f1a] to-[#070a12]" />
-        <div className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: 'repeating-linear-gradient(45deg, #c9a84c 0, #c9a84c 1px, transparent 0, transparent 50%)', backgroundSize: '30px 30px' }}
-        />
-        <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-          <div className="text-center md:text-left order-2 md:order-1">
-            <div className="inline-flex items-center gap-2 border border-[#c9a84c]/30 text-[#c9a84c] text-[10px] font-semibold uppercase tracking-[0.3em] px-4 py-2 mb-8">
-              ManPrime Store
-            </div>
-            <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl text-[#e8eaf0] uppercase leading-[1.05] mb-6">
-              {dict.hero.title}
-              <br />
-              <span className="text-[#c9a84c]">{dict.hero.titleAccent}</span>
-            </h1>
-            <p className="text-[#8b9ab0] text-base md:text-lg leading-relaxed mb-10 max-w-md mx-auto md:mx-0">
-              {dict.hero.subtitle}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Link
-                href={`/${lang}/catalog`}
-                className="bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-montserrat font-semibold px-10 py-4 uppercase tracking-widest text-sm transition-all duration-300 hover:shadow-[0_0_24px_rgba(181,98,42,0.4)]"
-              >
-                {dict.hero.cta}
-              </Link>
-              <Link
-                href={`/${lang}/about`}
-                className="border border-[#2a3347] hover:border-[#c9a84c]/50 text-[#8b9ab0] hover:text-[#c9a84c] font-medium px-10 py-4 uppercase tracking-widest text-sm transition-colors"
-              >
-                {dict.hero.ctaSecondary}
-              </Link>
-            </div>
+      {/* HERO — temporary static, animated sachet coming in phase 4 */}
+      <section className="relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full bg-copper/10 blur-[120px] pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-5 md:px-8 pt-20 md:pt-28 pb-24 md:pb-32 text-center">
+          <span className="inline-block text-copper text-[11px] font-medium tracking-[0.3em] uppercase mb-8">
+            {lang === 'uk' ? 'Натуральне чоловіче здоров\'я' : lang === 'ru' ? 'Натуральное мужское здоровье' : "Natural men's health"}
+          </span>
+
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[88px] text-foreground leading-[1.05] tracking-tight max-w-4xl mx-auto">
+            {lang === 'uk' ? (
+              <>Сила, яку ти<br /><em className="italic text-copper font-normal">відчуєш</em> щодня</>
+            ) : lang === 'ru' ? (
+              <>Сила, которую<br />ты <em className="italic text-copper font-normal">почувствуешь</em> каждый день</>
+            ) : (
+              <>The strength you<br /><em className="italic text-copper font-normal">feel</em> every day</>
+            )}
+          </h1>
+
+          <p className="text-muted text-base md:text-lg leading-relaxed mt-8 max-w-xl mx-auto">
+            {lang === 'uk'
+              ? 'Медова основа. Без хімії. З турботою про твоє тіло, енергію та впевненість.'
+              : lang === 'ru'
+              ? 'Медовая основа. Без химии. С заботой о твоём теле, энергии и уверенности.'
+              : 'Honey-based. No chemicals. Made for your body, energy, and confidence.'}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-12">
+            <Link
+              href={`/${lang}/catalog`}
+              className="inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-medium px-8 py-4 text-sm tracking-wide transition-colors rounded-full"
+            >
+              {dict.hero.cta}
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link
+              href={`/${lang}/about`}
+              className="inline-flex items-center justify-center gap-2 border border-border text-foreground hover:border-copper hover:text-copper font-medium px-8 py-4 text-sm tracking-wide transition-colors rounded-full"
+            >
+              {dict.hero.ctaSecondary}
+            </Link>
           </div>
 
-          <div className="order-1 md:order-2 flex justify-center">
-            <div className="relative w-full max-w-sm md:max-w-full">
-              <Image
-                src="/hero-banner.png"
-                alt="ManPrime — чоловіче здоров'я"
-                width={580}
-                height={435}
-                className="w-full h-auto object-cover rounded-sm shadow-2xl shadow-black/60"
-                priority
-              />
-              <div className="absolute inset-0 rounded-sm ring-1 ring-[#c9a84c]/10" />
-            </div>
+          <div className="mt-20 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-muted-2 text-[11px] tracking-[0.2em] uppercase">
+            <span className="flex items-center gap-2">
+              <span className="w-1 h-1 rounded-full bg-copper" />
+              {lang === 'uk' ? '100% Натурально' : lang === 'ru' ? '100% Натурально' : '100% Natural'}
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="w-1 h-1 rounded-full bg-copper" />
+              {lang === 'uk' ? 'Українська якість' : lang === 'ru' ? 'Украинское качество' : 'Made in Ukraine'}
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="w-1 h-1 rounded-full bg-copper" />
+              {lang === 'uk' ? 'Без хімії' : lang === 'ru' ? 'Без химии' : 'No chemicals'}
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Trust block */}
-      <section className="bg-[#111827] border-y border-[#1e2a3a]">
-        <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
+      {/* TRUST FEATURES */}
+      <section className="border-y border-border bg-surface/30">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 py-20 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           {[
-            { icon: '🌿', title: '100% НАТУРАЛЬНО', desc: 'Тільки перевірені компоненти без хімії' },
-            { icon: '🔒', title: 'КОНФІДЕНЦІЙНІСТЬ', desc: 'Анонімна упаковка та доставка' },
-            { icon: '⚡', title: 'ГАРАНТІЯ ЕФЕКТУ', desc: 'Клінічно підтверджений результат' },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="flex flex-col items-center text-center gap-3">
-              <span className="text-3xl">{icon}</span>
-              <h3 className="text-[#c9a84c] font-heading text-sm tracking-widest uppercase">{title}</h3>
-              <p className="text-[#8b9ab0] text-sm leading-relaxed">{desc}</p>
+            { icon: <LeafIcon />, title: dict.features.natural.title, desc: dict.features.natural.desc },
+            { icon: <ShieldIcon />, title: dict.features.certified.title, desc: dict.features.certified.desc },
+            { icon: <TruckIcon />, title: dict.features.delivery.title, desc: dict.features.delivery.desc },
+          ].map((f) => (
+            <div key={f.title} className="flex flex-col items-start gap-4">
+              <div className="text-copper">{f.icon}</div>
+              <h3 className="font-serif text-xl text-foreground">{f.title}</h3>
+              <p className="text-muted text-[15px] leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Products */}
-      <section className="py-20 bg-linear-to-b from-[#0d1120] to-[#0b0f1a]">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <p className="text-[#8b6f47] text-xs font-semibold tracking-[0.4em] uppercase mb-3">Наші комплекси</p>
-            <h2 className="font-heading text-4xl md:text-5xl text-[#e8eaf0] uppercase">
-              {dict.products.title}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {products.map((product) => {
-              const oldPrice = OLD_PRICES[product.slug]
-              const badge = BADGES[product.slug]
-              return (
-                <div
-                  key={product.id}
-                  className="bg-[#1c2333] border border-[#2a3347] hover:border-[#c9a84c]/40 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(201,168,76,0.08)] transition-all duration-300 group flex flex-col rounded-sm"
-                >
-                  <div className="relative h-50 bg-linear-to-b from-[#232d42] to-[#1a2133] flex items-center justify-center overflow-hidden rounded-t-sm">
-                    {badge && (
-                      <span className={`absolute top-3 left-3 text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-md ${
-                        badge.color === 'gold'
-                          ? 'bg-[#c9a84c] text-[#0b0f1a]'
-                          : 'bg-[#8b6f47] text-[#e8eaf0]'
-                      }`}>
-                        {badge.label}
-                      </span>
-                    )}
-                    {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-24 h-24 rounded-full bg-[#2a3347] border border-[#3a4a66] flex items-center justify-center">
-                          <span className="text-4xl">💊</span>
-                        </div>
-                        <div className="w-16 h-px bg-linear-to-r from-transparent via-[#c9a84c]/30 to-transparent" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <h3 className="font-montserrat font-semibold text-[#e8eaf0] text-[22px] mb-2 leading-tight">{product[nameKey]}</h3>
-                    <p className="text-[#8b9ab0] text-sm leading-relaxed mb-4 flex-1 line-clamp-2">{product[descKey]}</p>
-
-                    <div className="border-t border-[#2a3347] pt-4 mb-4">
-                      <div className="flex items-end justify-between">
-                        <div>
-                          {oldPrice && (
-                            <span className="block text-[#8b9ab0] text-sm line-through mb-0.5">{oldPrice} {dict.products.uah}</span>
-                          )}
-                          <span className="text-[#c9a84c] font-bold text-[28px] leading-none">{product.price}</span>
-                          <span className="text-[#8b9ab0] text-sm ml-1">{dict.products.uah}</span>
-                        </div>
-                        <span className="text-[10px] text-[#4ade80] font-medium uppercase tracking-wider flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] inline-block" />
-                          {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Link
-                        href={`/${lang}/product/${product.slug}`}
-                        className="flex-1 border border-[#8b9ab0] hover:border-[#c9a84c] text-[#8b9ab0] hover:text-[#c9a84c] text-sm font-semibold py-2.75 text-center uppercase tracking-wider transition-colors rounded-sm"
-                      >
-                        {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'}
-                      </Link>
-                      <Link
-                        href={`/${lang}/checkout?product=${product.slug}`}
-                        className="flex-1 bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] text-sm font-semibold py-2.75 text-center uppercase tracking-wider transition-colors rounded-sm"
-                      >
-                        {dict.products.buy_now}
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="text-center mt-10">
+      {/* PRODUCTS */}
+      <section className="py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-5 md:px-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+            <div>
+              <span className="text-copper text-[11px] font-medium tracking-[0.3em] uppercase">
+                {lang === 'uk' ? 'Колекція' : lang === 'ru' ? 'Коллекция' : 'Collection'}
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl text-foreground mt-3 max-w-xl leading-tight">
+                {dict.products.title}
+              </h2>
+            </div>
             <Link
               href={`/${lang}/catalog`}
-              className="inline-flex items-center gap-2 border border-[#2a3347] hover:border-[#c9a84c]/40 text-[#8b9ab0] hover:text-[#c9a84c] font-medium px-8 py-3 text-sm uppercase tracking-widest transition-colors rounded-sm"
+              className="inline-flex items-center gap-2 text-foreground hover:text-copper text-sm tracking-wide transition-colors group"
             >
-              {lang === 'uk' ? 'Всі товари' : lang === 'ru' ? 'Все товары' : 'All products'} →
+              {lang === 'uk' ? 'Усі препарати' : lang === 'ru' ? 'Все препараты' : 'All products'}
+              <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
             </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+            {products.map((product) => (
+              <article
+                key={product.id}
+                className="group bg-surface border border-border hover:border-copper/50 rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1"
+              >
+                <div className="relative aspect-square bg-linear-to-br from-surface-2 to-surface flex items-center justify-center overflow-hidden">
+                  {product.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="relative w-32 h-44 rounded-md bg-linear-to-b from-[#0c1a16] to-[#1c352c] border border-copper/20 shadow-2xl flex flex-col items-center justify-between py-6 transition-transform duration-700 group-hover:scale-110">
+                      <div className="text-copper text-[8px] tracking-[0.3em] font-bold">MANPRIME</div>
+                      <div className="w-8 h-8 rounded-full border border-copper/40 flex items-center justify-center">
+                        <span className="text-copper text-lg">♂</span>
+                      </div>
+                      <div className="text-muted-2 text-[7px] tracking-[0.25em] uppercase">{product.slug}</div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6 md:p-7">
+                  <h3 className="font-serif text-2xl text-foreground mb-2">{product[nameKey]}</h3>
+                  <p className="text-muted text-[14px] leading-relaxed mb-6 line-clamp-2 min-h-10.5">
+                    {product[descKey]}
+                  </p>
+                  <div className="flex items-end justify-between pt-5 border-t border-border/40">
+                    <div>
+                      <span className="text-copper font-serif text-3xl">{product.price}</span>
+                      <span className="text-muted text-sm ml-1.5">{dict.products.uah}</span>
+                    </div>
+                    <Link
+                      href={`/${lang}/product/${product.slug}`}
+                      className="text-foreground hover:text-copper text-[13px] tracking-wide font-medium underline-offset-4 hover:underline transition-colors"
+                    >
+                      {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'} →
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Delivery */}
-      <section className="bg-[#111827] border-t border-[#1e2a3a] py-16">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl text-[#e8eaf0] uppercase mb-4">
-            {dict.delivery_info.title}
-          </h2>
-          <p className="text-[#8b9ab0] text-base max-w-xl mx-auto mb-10">{dict.delivery_info.text}</p>
-          <div className="flex justify-center gap-12">
+      {/* DELIVERY */}
+      <section className="border-t border-border bg-surface/30">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 py-20 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span className="text-copper text-[11px] font-medium tracking-[0.3em] uppercase">
+              {lang === 'uk' ? 'Логістика' : lang === 'ru' ? 'Логистика' : 'Logistics'}
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl text-foreground mt-3 leading-tight">
+              {dict.delivery_info.title}
+            </h2>
+            <p className="text-muted text-[16px] leading-relaxed mt-6 max-w-md">
+              {dict.delivery_info.text}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
             {[
-              { icon: '📦', label: 'Нова Пошта' },
-              { icon: '✉️', label: 'Укрпошта' },
-              { icon: '📍', label: 'По всій Україні' },
-            ].map(({ icon, label }) => (
-              <div key={label} className="flex flex-col items-center gap-2">
-                <span className="text-2xl">{icon}</span>
-                <span className="text-[#8b6f47] text-xs uppercase tracking-wider">{label}</span>
+              { name: 'Нова Пошта', icon: '📦' },
+              { name: 'Укрпошта', icon: '✉️' },
+            ].map((s) => (
+              <div key={s.name} className="aspect-square bg-surface border border-border rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-copper/40 transition-colors">
+                <span className="text-3xl">{s.icon}</span>
+                <span className="text-muted text-[13px] tracking-wide">{s.name}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
     </>
+  )
+}
+
+function cap(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+function LeafIcon() {
+  return (
+    <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 4c-9 0-15 6-15 14v2h2c8 0 14-6 14-14V4z" />
+      <path strokeLinecap="round" d="M3 21c2-6 6-10 12-12" />
+    </svg>
+  )
+}
+function ShieldIcon() {
+  return (
+    <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l8 3v7c0 4.5-3.5 7.5-8 8-4.5-.5-8-3.5-8-8V6l8-3z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
+    </svg>
+  )
+}
+function TruckIcon() {
+  return (
+    <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2 7h11v10H2zM13 10h5l3 3v4h-8M6 20a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4z" />
+    </svg>
   )
 }
