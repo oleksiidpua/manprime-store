@@ -17,6 +17,12 @@ interface HeaderProps {
 const langLabels = { uk: 'УКР', ru: 'РУС', en: 'ENG' }
 const langs = ['uk', 'ru', 'en'] as const
 
+const buyLabel: Record<Locale, string> = {
+  uk: 'Купити',
+  ru: 'Купить',
+  en: 'Buy now',
+}
+
 export default function Header({ dict, lang }: HeaderProps) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -115,6 +121,16 @@ export default function Header({ dict, lang }: HeaderProps) {
           >
             <CartIcon className="w-4.5 h-4.5" />
           </Link>
+
+          <Link
+            href={`/${lang}/catalog`}
+            className="inline-flex items-center gap-1.5 bg-copper hover:bg-copper-hover text-background font-medium text-[12px] tracking-wide px-5 py-2.5 rounded-full transition-colors shadow-[0_4px_18px_rgba(212,165,98,0.3)]"
+          >
+            {buyLabel[lang]}
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
 
         {/* Mobile hamburger */}
@@ -149,6 +165,16 @@ export default function Header({ dict, lang }: HeaderProps) {
               {label}
             </Link>
           ))}
+
+          <Link
+            href={`/${lang}/catalog`}
+            className="mt-6 inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-medium text-sm tracking-wide px-6 py-3.5 rounded-full transition-colors"
+          >
+            {buyLabel[lang]}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </Link>
 
           <div className="flex items-center justify-between mt-8 pt-6">
             <div className="flex items-center gap-4">

@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  /* Deep Forest palette */
-  --background: #0F1F1A;
-  --surface: #142A23;
-  --surface-2: #1A352C;
+  /* Midnight Navy palette */
+  --background: #0E1428;
+  --surface: #161E36;
+  --surface-2: #1E2848;
   --foreground: #F5F0E6;
   --muted: #A8A095;
   --muted-2: #7A786E;
-  --border: #2A4035;
-  --border-2: #3A5145;
+  --border: #2A3252;
+  --border-2: #3A4262;
 
-  /* Copper accent */
-  --copper: #B87333;
-  --copper-hover: #D08A47;
-  --copper-glow: rgba(184, 115, 51, 0.4);
-  --copper-soft: rgba(184, 115, 51, 0.12);
+  /* Honey gold accent — warm yellow with depth (variable name --copper kept for codebase stability) */
+  --copper: #D4A562;
+  --copper-hover: #E8BA75;
+  --copper-glow: rgba(212, 165, 98, 0.4);
+  --copper-soft: rgba(212, 165, 98, 0.12);
 
-  /* Brass / honey */
+  /* Warm gold + honey — used sparingly as decorative warmth */
   --brass: #C9A96E;
   --honey: #E4A04E;
 }

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
+import HeroAnimated from '@/components/HeroAnimated'
 
 const FALLBACK_PRODUCTS: Product[] = [
   {
@@ -53,68 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
 
   return (
     <>
-      {/* HERO — temporary static, animated sachet coming in phase 4 */}
-      <section className="relative overflow-hidden">
-        {/* Subtle deep glow — green-on-green, no yellow tint */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full bg-surface-2/40 blur-[140px] pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-5 md:px-8 pt-20 md:pt-28 pb-24 md:pb-32 text-center">
-          <span className="inline-block text-copper text-[11px] font-medium tracking-[0.3em] uppercase mb-8">
-            {lang === 'uk' ? 'Натуральне чоловіче здоров\'я' : lang === 'ru' ? 'Натуральное мужское здоровье' : "Natural men's health"}
-          </span>
-
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[88px] text-foreground leading-[1.05] tracking-tight max-w-4xl mx-auto">
-            {lang === 'uk' ? (
-              <>Сила, яку ти<br /><em className="italic text-copper font-normal">відчуєш</em> щодня</>
-            ) : lang === 'ru' ? (
-              <>Сила, которую<br /><em className="italic text-copper font-normal">чувствуешь</em> каждый день</>
-            ) : (
-              <>The strength you<br /><em className="italic text-copper font-normal">feel</em> every day</>
-            )}
-          </h1>
-
-          <p className="text-muted text-base md:text-lg leading-relaxed mt-8 max-w-xl mx-auto">
-            {lang === 'uk'
-              ? 'Медова основа. Без хімії. З турботою про твоє тіло, енергію та впевненість.'
-              : lang === 'ru'
-              ? 'Медовая основа. Без химии. С заботой о твоём теле, энергии и уверенности.'
-              : 'Honey-based. No chemicals. Made for your body, energy, and confidence.'}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-12">
-            <Link
-              href={`/${lang}/catalog`}
-              className="inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-medium px-8 py-4 text-sm tracking-wide transition-colors rounded-full"
-            >
-              {dict.hero.cta}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              href={`/${lang}/about`}
-              className="inline-flex items-center justify-center gap-2 border border-border text-foreground hover:border-copper hover:text-copper font-medium px-8 py-4 text-sm tracking-wide transition-colors rounded-full"
-            >
-              {dict.hero.ctaSecondary}
-            </Link>
-          </div>
-
-          <div className="mt-20 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-muted-2 text-[11px] tracking-[0.2em] uppercase">
-            <span className="flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full bg-copper" />
-              {lang === 'uk' ? '100% Натурально' : lang === 'ru' ? '100% Натурально' : '100% Natural'}
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full bg-copper" />
-              {lang === 'uk' ? 'Українська якість' : lang === 'ru' ? 'Украинское качество' : 'Made in Ukraine'}
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full bg-copper" />
-              {lang === 'uk' ? 'Без хімії' : lang === 'ru' ? 'Без химии' : 'No chemicals'}
-            </span>
-          </div>
-        </div>
-      </section>
+      <HeroAnimated lang={lang} ctaPrimary={dict.hero.cta} ctaSecondary={dict.hero.ctaSecondary} />
 
       {/* TRUST FEATURES */}
       <section className="border-y border-border bg-surface/30">
@@ -130,6 +70,59 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
               <p className="text-muted text-[15px] leading-relaxed">{f.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* HONEY INGREDIENT STORY — full-width video background */}
+      <section className="relative overflow-hidden border-y border-border min-h-[80vh] md:min-h-[85vh] flex items-center">
+        {/* Background video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden
+        >
+          <source src="/honey.mp4" type="video/mp4" />
+        </video>
+
+        {/* Dark overlay for legibility */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,20,40,0.55)_0%,rgba(14,20,40,0.85)_75%,rgba(14,20,40,0.95)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/30 via-transparent to-background/40 pointer-events-none" />
+
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-3xl mx-auto px-5 md:px-8 py-20 md:py-28 text-center">
+          <span className="text-copper text-[11px] font-medium tracking-[0.3em] uppercase">
+            {lang === 'uk' ? 'Натуральна основа' : lang === 'ru' ? 'Натуральная основа' : 'Natural base'}
+          </span>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mt-4 leading-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+            {lang === 'uk'
+              ? <>Чому ми обрали <em className="italic text-copper font-normal">мед</em></>
+              : lang === 'ru'
+              ? <>Почему мы выбрали <em className="italic text-copper font-normal">мёд</em></>
+              : <>Why we chose <em className="italic text-copper font-normal">honey</em></>}
+          </h2>
+          <p className="text-foreground/85 text-[16px] md:text-lg leading-relaxed mt-6 max-w-xl mx-auto">
+            {lang === 'uk'
+              ? 'Мед — найдавніший природний носій активних компонентів. Він допомагає організму швидко і безпечно засвоювати корисні речовини, без хімії та консервантів.'
+              : lang === 'ru'
+              ? 'Мёд — древнейший природный носитель активных компонентов. Он помогает организму быстро и безопасно усваивать полезные вещества, без химии и консервантов.'
+              : 'Honey is the oldest natural carrier of active compounds. It helps your body absorb nutrients quickly and safely — no chemicals, no preservatives.'}
+          </p>
+          <ul className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-3 text-foreground/80 text-[13px] tracking-wide">
+            {[
+              lang === 'uk' ? '100% натуральна основа' : lang === 'ru' ? '100% натуральная основа' : '100% natural base',
+              lang === 'uk' ? 'Швидке засвоєння' : lang === 'ru' ? 'Быстрое усвоение' : 'Fast absorption',
+              lang === 'uk' ? 'Без штучних добавок' : lang === 'ru' ? 'Без искусственных добавок' : 'No artificial additives',
+            ].map((item) => (
+              <li key={item} className="flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-copper shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
