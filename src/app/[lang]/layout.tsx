@@ -1,6 +1,7 @@
 import { locales, type Locale, getDictionary } from '@/lib/i18n'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import FloatingCallButton from '@/components/FloatingCallButton'
 
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
@@ -19,6 +20,7 @@ export default async function LangLayout({
       <Header dict={dict} lang={locale} />
       <main className="flex-1">{children}</main>
       <Footer dict={dict} lang={locale} />
+      <FloatingCallButton lang={locale} />
     </>
   )
 }

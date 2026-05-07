@@ -160,3 +160,20 @@ enum Carrier {
   NOVAPOSHTA
   UKRPOSHTA
 }
+
+model CallbackRequest {
+  id        String              @id @default(cuid())
+  name      String
+  phone     String
+  preferred String?
+  note      String?
+  status    CallbackStatus      @default(NEW)
+  createdAt DateTime            @default(now())
+}
+
+enum CallbackStatus {
+  NEW
+  CONTACTED
+  DONE
+  CANCELLED
+}
