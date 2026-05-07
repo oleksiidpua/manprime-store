@@ -45,7 +45,7 @@ export default function HeroAnimated({ lang, ctaPrimary, ctaSecondary }: HeroAni
 
   return (
     <section
-      className="relative overflow-hidden min-h-[88vh] md:min-h-[92vh] flex items-center bg-cover bg-fixed"
+      className="relative overflow-hidden min-h-[88vh] md:min-h-[92vh] flex items-center bg-cover bg-no-repeat md:bg-fixed"
       style={{
         backgroundImage: 'url(/hero-couple.jpg)',
         backgroundPosition: 'center 28%',

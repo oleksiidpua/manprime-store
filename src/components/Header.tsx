@@ -133,13 +133,22 @@ export default function Header({ dict, lang }: HeaderProps) {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden p-2 -mr-2 text-foreground"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
-          aria-expanded={menuOpen}
-        >
+        {/* Mobile right cluster: Buy pill + hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <Link
+            href={`/${lang}/catalog`}
+            className="inline-flex items-center gap-1.5 bg-copper hover:bg-copper-hover text-background font-medium text-[12px] tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-[0_4px_14px_rgba(212,165,98,0.3)]"
+            aria-label={buyLabel[lang]}
+          >
+            {buyLabel[lang]}
+          </Link>
+
+          <button
+            className="p-2 -mr-1 text-foreground"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+          >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {menuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
@@ -150,7 +159,8 @@ export default function Header({ dict, lang }: HeaderProps) {
               </>
             )}
           </svg>
-        </button>
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

@@ -81,7 +81,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden
         >
