@@ -18,9 +18,9 @@ const langLabels = { uk: 'УКР', ru: 'РУС', en: 'ENG' }
 const langs = ['uk', 'ru', 'en'] as const
 
 const buyLabel: Record<Locale, string> = {
-  uk: 'Купити',
-  ru: 'Купить',
-  en: 'Buy now',
+  uk: 'Замовити',
+  ru: 'Заказать',
+  en: 'Order',
 }
 
 export default function Header({ dict, lang }: HeaderProps) {

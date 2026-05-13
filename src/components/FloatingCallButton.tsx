@@ -89,12 +89,18 @@ const dict: Record<Locale, {
 export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
   const t = dict[lang]
   const [open, setOpen] = useState(false)
+  const [openedAt, setOpenedAt] = useState(0)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [preferred, setPreferred] = useState(t.preferredOptions[0])
   const [note, setNote] = useState('')
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  const openModal = useCallback(() => {
+    setOpen(true)
+    setOpenedAt(Date.now())
+  }, [])
 
   const close = useCallback(() => {
     setOpen(false)
@@ -109,6 +115,16 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
       setErrorMsg(null)
     }, 250)
   }, [state, t.preferredOptions])
+
+  // Click-through guard: ignore backdrop clicks for 300ms after open
+  const handleBackdropClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target !== e.currentTarget) return
+      if (Date.now() - openedAt < 300) return
+      close()
+    },
+    [openedAt, close]
+  )
 
   // ESC to close + lock body scroll while modal open
   useEffect(() => {
@@ -164,7 +180,10 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
       {/* Floating button */}
       <motion.button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          e.stopPropagation()
+          openModal()
+        }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 1.2 }}
@@ -186,7 +205,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-0 md:p-5"
-            onClick={close}
+            onClick={handleBackdropClick}
           >
             <motion.div
               initial={{ y: 30, opacity: 0 }}
@@ -228,7 +247,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
                           placeholder={t.namePlaceholder}
                           required
                           maxLength={80}
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
                         />
                       </div>
 
@@ -242,7 +261,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+38 098 123 45 67"
                           required
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
                         />
                       </div>
 
@@ -253,7 +272,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
                         <select
                           value={preferred}
                           onChange={(e) => setPreferred(e.target.value)}
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground text-sm transition-colors outline-none"
                         >
                           {t.preferredOptions.map((opt) => (
                             <option key={opt} value={opt}>{opt}</option>
@@ -267,7 +286,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
                         placeholder={t.notePlaceholder}
                         rows={2}
                         maxLength={400}
-                        className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none resize-none"
+                        className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none resize-none"
                       />
 
                       {errorMsg && (

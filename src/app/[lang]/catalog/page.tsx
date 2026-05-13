@@ -72,7 +72,7 @@ export default async function CatalogPage({ params }: { params: Promise<{ lang: 
             return (
               <div
                 key={product.id}
-                className="bg-[#1c2333] border border-[#2a3347] hover:border-[#c9a84c]/40 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(201,168,76,0.08)] transition-all duration-300 group flex flex-col rounded-sm"
+                className="bg-[#1c2333] border border-[#2a3347] hover:border-[#c9a84c]/40 md:hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(201,168,76,0.08)] transition-all duration-300 group flex flex-col rounded-sm"
               >
                 <div className="relative h-50 bg-linear-to-b from-[#232d42] to-[#1a2133] flex items-center justify-center overflow-hidden rounded-t-sm">
                   {badge && (
@@ -122,10 +122,10 @@ export default async function CatalogPage({ params }: { params: Promise<{ lang: 
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-stretch">
                     <Link
                       href={`/${lang}/product/${product.slug}`}
-                      className="flex-1 border border-[#8b9ab0] hover:border-[#c9a84c] text-[#8b9ab0] hover:text-[#c9a84c] text-sm font-semibold py-2.75 text-center uppercase tracking-wider transition-colors rounded-sm"
+                      className="flex-1 inline-flex items-center justify-center border border-[#8b9ab0] hover:border-[#c9a84c] text-[#8b9ab0] hover:text-[#c9a84c] text-sm font-semibold py-3.5 px-4 text-center uppercase tracking-wider transition-colors rounded-full"
                     >
                       {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'}
                     </Link>

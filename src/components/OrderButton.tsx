@@ -113,6 +113,7 @@ const dict: Record<Locale, {
 export default function OrderButton({ lang, product }: OrderButtonProps) {
   const t = dict[lang]
   const [open, setOpen] = useState(false)
+  const [openedAt, setOpenedAt] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -122,6 +123,11 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const total = product.price * quantity
+
+  const openModal = useCallback(() => {
+    setOpen(true)
+    setOpenedAt(Date.now())
+  }, [])
 
   const close = useCallback(() => {
     setOpen(false)
@@ -137,6 +143,17 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
       setErrorMsg(null)
     }, 250)
   }, [state])
+
+  // Click-through guard: ignore backdrop clicks for 300ms after open
+  // (mobile touchend → click can land on backdrop right after it mounts)
+  const handleBackdropClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target !== e.currentTarget) return
+      if (Date.now() - openedAt < 300) return
+      close()
+    },
+    [openedAt, close]
+  )
 
   useEffect(() => {
     if (!open) return
@@ -200,8 +217,11 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="flex-1 inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-semibold py-4 px-6 uppercase tracking-widest text-sm transition-colors rounded-full shadow-[0_8px_30px_rgba(212,165,98,0.3)]"
+        onClick={(e) => {
+          e.stopPropagation()
+          openModal()
+        }}
+        className="flex-1 inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-semibold py-3.5 px-6 uppercase tracking-widest text-sm transition-colors rounded-full shadow-[0_8px_30px_rgba(212,165,98,0.3)]"
       >
         {t.buttonLabel}
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +237,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-0 md:p-5"
-            onClick={close}
+            onClick={handleBackdropClick}
           >
             <motion.div
               initial={{ y: 30, opacity: 0 }}
@@ -273,7 +293,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
                           placeholder={t.namePlaceholder}
                           required
                           maxLength={80}
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
                         />
                       </div>
 
@@ -287,7 +307,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+38 098 123 45 67"
                           required
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
                         />
                       </div>
 
@@ -301,7 +321,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
                           onChange={(e) => setCity(e.target.value)}
                           placeholder={t.cityPlaceholder}
                           maxLength={80}
-                          className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
+                          className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none"
                         />
                       </div>
 
@@ -311,7 +331,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
                         placeholder={t.notePlaceholder}
                         rows={2}
                         maxLength={400}
-                        className="w-full bg-background border border-border focus:border-copper rounded-lg px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none resize-none"
+                        className="w-full bg-background border border-border focus:border-copper rounded-xl px-4 py-3 text-foreground placeholder:text-muted-2 text-sm transition-colors outline-none resize-none"
                       />
 
                       {errorMsg && <p className="text-[13px] text-red-400" role="alert">{errorMsg}</p>}
