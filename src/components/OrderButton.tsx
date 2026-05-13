@@ -236,7 +236,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-0 md:p-5"
+            className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/85 backdrop-blur-md p-0 md:p-5"
             onClick={handleBackdropClick}
           >
             <motion.div
