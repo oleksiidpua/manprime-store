@@ -3,6 +3,7 @@ import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 import { pageMetadata } from '@/lib/seo'
+import OrderButton from '@/components/OrderButton'
 import type { Metadata } from 'next'
 
 const CATALOG_SEO: Record<Locale, { title: string; description: string }> = {
@@ -128,12 +129,15 @@ export default async function CatalogPage({ params }: { params: Promise<{ lang: 
                     >
                       {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'}
                     </Link>
-                    <Link
-                      href={`/${lang}/checkout?product=${product.slug}`}
-                      className="flex-1 bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] text-sm font-semibold py-2.75 text-center uppercase tracking-wider transition-colors rounded-sm"
-                    >
-                      {dict.products.buy_now}
-                    </Link>
+                    <OrderButton
+                      lang={lang}
+                      product={{
+                        id: product.id,
+                        slug: product.slug,
+                        name: product[nameKey],
+                        price: product.price,
+                      }}
+                    />
                   </div>
                 </div>
               </div>
