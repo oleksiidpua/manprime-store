@@ -115,14 +115,6 @@ export default function Header({ dict, lang }: HeaderProps) {
           </Link>
 
           <Link
-            href={`/${lang}/cart`}
-            aria-label={n.cart}
-            className="relative text-muted hover:text-copper transition-colors"
-          >
-            <CartIcon className="w-4.5 h-4.5" />
-          </Link>
-
-          <Link
             href={`/${lang}/catalog`}
             className="inline-flex items-center gap-1.5 bg-copper hover:bg-copper-hover text-background font-medium text-[12px] tracking-wide px-5 py-2.5 rounded-full transition-colors shadow-[0_4px_18px_rgba(212,165,98,0.3)]"
           >
@@ -191,10 +183,6 @@ export default function Header({ dict, lang }: HeaderProps) {
               <Link href={`/${lang}/auth`} className="flex items-center gap-2 text-muted hover:text-copper transition-colors">
                 <UserIcon className="w-5 h-5" />
                 <span className="text-sm">{n.login || 'Account'}</span>
-              </Link>
-              <Link href={`/${lang}/cart`} className="flex items-center gap-2 text-muted hover:text-copper transition-colors">
-                <CartIcon className="w-5 h-5" />
-                <span className="text-sm">{n.cart}</span>
               </Link>
             </div>
 

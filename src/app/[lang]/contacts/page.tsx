@@ -1,4 +1,27 @@
 import { getDictionary, type Locale } from '@/lib/i18n'
+import { pageMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
+
+const CONTACTS_SEO: Record<Locale, { title: string; description: string }> = {
+  uk: {
+    title: 'Контакти ManPrime',
+    description: "Звʼяжіться з нами: email, телефон, доставка по Україні. Натуральні БАДи для чоловічого здоров'я.",
+  },
+  ru: {
+    title: 'Контакты ManPrime',
+    description: 'Свяжитесь с нами: email, телефон, доставка по Украине. Натуральные БАДы для мужского здоровья.',
+  },
+  en: {
+    title: 'Contacts — ManPrime',
+    description: "Get in touch: email, phone, delivery across Ukraine. Natural men's health supplements.",
+  },
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params
+  const s = CONTACTS_SEO[lang]
+  return pageMetadata({ lang, path: '/contacts', title: s.title, description: s.description })
+}
 
 export default async function ContactsPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params

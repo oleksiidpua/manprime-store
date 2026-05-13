@@ -2,6 +2,29 @@ import Link from 'next/link'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
+import { pageMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
+
+const CATALOG_SEO: Record<Locale, { title: string; description: string }> = {
+  uk: {
+    title: 'Каталог БАДів для чоловіків',
+    description: "Натуральні комплекси ManPrime: Classic, Forte, Longevity. Медова основа, без хімії. Підтримка потенції, тестостерону, енергії. Доставка по Україні.",
+  },
+  ru: {
+    title: 'Каталог БАДов для мужчин',
+    description: 'Натуральные комплексы ManPrime: Classic, Forte, Longevity. Медовая основа, без химии. Поддержка потенции, тестостерона, энергии. Доставка по Украине.',
+  },
+  en: {
+    title: "Catalog — Natural men's supplements",
+    description: "ManPrime catalog: Classic, Forte, Longevity. Honey-based natural supplements for potency, testosterone, energy. Delivered across Ukraine.",
+  },
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params
+  const s = CATALOG_SEO[lang]
+  return pageMetadata({ lang, path: '/catalog', title: s.title, description: s.description })
+}
 
 const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
 const BADGES: Record<string, { label: string; color: 'gold' | 'brown' }> = {

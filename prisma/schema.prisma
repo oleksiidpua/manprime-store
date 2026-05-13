@@ -148,6 +148,7 @@ enum PaymentMethod {
   LIQPAY
   MONOBANK
   PORTMONE
+  CALL
 }
 
 enum PaymentStatus {

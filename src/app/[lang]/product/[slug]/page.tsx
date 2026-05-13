@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
-import AddToCartButton from '@/components/AddToCartButton'
+import OrderButton from '@/components/OrderButton'
+import { pageMetadata, SITE_URL } from '@/lib/seo'
 import type { Product } from '@prisma/client'
+import type { Metadata } from 'next'
 
 const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
 
@@ -13,12 +16,37 @@ const FALLBACK_PRODUCTS: Product[] = [
   { id: '3', slug: 'longevity', nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity', descUk: 'Спеціальний комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.', descRu: 'Специальный комплекс для мужчин 40+.', descEn: 'Special complex for men 40+.', compUk: 'Коензим Q10, Омега-3, Вітамін E, Ресвератрол, Цинк', compRu: 'Коэнзим Q10, Омега-3, Витамин E, Ресвератрол, Цинк', compEn: 'Coenzyme Q10, Omega-3, Vitamin E, Resveratrol, Zinc', price: 1490, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
 ]
 
+async function loadProduct(slug: string): Promise<Product | null> {
+  const dbProduct = await prisma.product.findUnique({ where: { slug } }).catch(() => null)
+  return dbProduct ?? FALLBACK_PRODUCTS.find((p) => p.slug === slug) ?? null
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale; slug: string }>
+}): Promise<Metadata> {
+  const { lang, slug } = await params
+  const product = await loadProduct(slug)
+  if (!product) {
+    return pageMetadata({ lang, path: `/product/${slug}`, title: 'Товар не знайдено', description: '' })
+  }
+  const nameKey = `name${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'nameUk' | 'nameRu' | 'nameEn'
+  const descKey = `desc${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'descUk' | 'descRu' | 'descEn'
+  return pageMetadata({
+    lang,
+    path: `/product/${slug}`,
+    title: product[nameKey],
+    description: product[descKey] || product[nameKey],
+    ogImage: product.imageUrl || undefined,
+  })
+}
+
 export default async function ProductPage({ params }: { params: Promise<{ lang: Locale; slug: string }> }) {
   const { lang, slug } = await params
   const dict = await getDictionary(lang)
 
-  const dbProduct = await prisma.product.findUnique({ where: { slug } }).catch(() => null)
-  const product = dbProduct ?? FALLBACK_PRODUCTS.find((p) => p.slug === slug) ?? null
+  const product = await loadProduct(slug)
   if (!product) notFound()
 
   const nameKey = `name${lang.charAt(0).toUpperCase() + lang.slice(1)}` as 'nameUk' | 'nameRu' | 'nameEn'
@@ -29,8 +57,30 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
   const benefitsLabel = lang === 'uk' ? 'Переваги' : lang === 'ru' ? 'Преимущества' : 'Benefits'
   const oldPrice = OLD_PRICES[product.slug]
 
+  const productLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product[nameKey],
+    description: product[descKey],
+    sku: product.slug,
+    brand: { '@type': 'Brand', name: 'ManPrime' },
+    image: product.imageUrl ? [product.imageUrl] : [`${SITE_URL}/hero-couple.jpg`],
+    offers: {
+      '@type': 'Offer',
+      url: `${SITE_URL}/${lang}/product/${product.slug}`,
+      priceCurrency: 'UAH',
+      price: product.price,
+      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+    },
+  }
+
   return (
     <div className="min-h-screen bg-[#0b0f1a]">
+      <Script
+        id="ld-product"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
       <div className="max-w-5xl mx-auto px-4 py-12">
         <nav className="text-sm text-[#8b9ab0] mb-10 flex items-center gap-2">
           <Link href={`/${lang}`} className="hover:text-[#c9a84c] transition-colors">{dict.nav.home}</Link>
@@ -96,13 +146,15 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <AddToCartButton product={product} nameKey={nameKey} dict={dict} lang={lang} />
-              <Link
-                href={`/${lang}/checkout?product=${product.slug}`}
-                className="flex-1 bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-semibold py-4 text-center uppercase tracking-widest text-sm transition-all hover:shadow-[0_0_20px_rgba(181,98,42,0.3)] rounded-sm"
-              >
-                {dict.products.buy_now}
-              </Link>
+              <OrderButton
+                lang={lang}
+                product={{
+                  id: product.id,
+                  slug: product.slug,
+                  name: product[nameKey],
+                  price: product.price,
+                }}
+              />
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#2a3347] text-sm text-[#8b9ab0] flex items-center gap-2">

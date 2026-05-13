@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Lora, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+
+const SITE_URL = "https://manprime-store.vercel.app";
+const GA_ID = "G-0SWCELS6C7";
+const FB_VERIFICATION = "qv5sl2g0gi6zzf20gcfe6i9fonvz96";
 
 const lora = Lora({
   variable: "--font-lora",
@@ -17,7 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://manprime-store.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
     template: "%s · ManPrime",
@@ -31,13 +36,14 @@ export const metadata: Metadata = {
     "тестостерон",
     "натуральні добавки",
     "медовий стик",
+    "БАД для потенції",
     "ManPrime",
   ],
   authors: [{ name: "ManPrime" }],
   openGraph: {
     type: "website",
     locale: "uk_UA",
-    url: "https://manprime-store.vercel.app",
+    url: SITE_URL,
     siteName: "ManPrime",
     title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
     description:
@@ -48,6 +54,34 @@ export const metadata: Metadata = {
     title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
     description: "Медова основа, без хімії. Доставка по всій Україні.",
   },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      uk: `${SITE_URL}/uk`,
+      ru: `${SITE_URL}/ru`,
+      en: `${SITE_URL}/en`,
+      "x-default": `${SITE_URL}/uk`,
+    },
+  },
+  other: {
+    "facebook-domain-verification": FB_VERIFICATION,
+  },
+};
+
+const ORG_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ManPrime",
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo-original.png`,
+  description: "Натуральні БАДи для чоловічого здоров'я на медовій основі.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Дніпро",
+    addressCountry: "UA",
+  },
+  sameAs: [],
 };
 
 export default function RootLayout({
@@ -62,6 +96,23 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+        <Script
+          id="ld-org"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSON_LD) }}
+        />
       </body>
     </html>
   );

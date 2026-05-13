@@ -19,7 +19,6 @@ export default function Footer({ dict, lang = 'uk' }: FooterProps) {
       title: lang === 'uk' ? 'Магазин' : lang === 'ru' ? 'Магазин' : 'Shop',
       links: [
         { href: `/${lang}/catalog`, label: dict.nav.catalog },
-        { href: `/${lang}/cart`, label: dict.nav.cart },
         { href: `/${lang}/auth`, label: dict.nav.login || 'Login' },
       ],
     },
@@ -110,20 +109,12 @@ export default function Footer({ dict, lang = 'uk' }: FooterProps) {
             © {year} ManPrime. {f.rights}.
           </p>
 
-          <div className="flex items-center gap-3">
-            <span className="text-muted-2 text-[10px] uppercase tracking-[0.2em]">
-              {lang === 'uk' ? 'Безпечна оплата' : lang === 'ru' ? 'Безопасная оплата' : 'Secure payment'}
-            </span>
-            <div className="flex gap-1.5">
-              {['Visa', 'MC', 'LiqPay', 'Mono'].map((p) => (
-                <span
-                  key={p}
-                  className="px-2 py-0.5 border border-border rounded text-muted-2 text-[10px] font-medium tracking-wide"
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
+          <div className="text-muted-2 text-[10px] uppercase tracking-[0.2em]">
+            {lang === 'uk'
+              ? 'Оплата при отриманні'
+              : lang === 'ru'
+              ? 'Оплата при получении'
+              : 'Payment on delivery'}
           </div>
         </div>
       </div>

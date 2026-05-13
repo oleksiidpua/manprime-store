@@ -1,4 +1,27 @@
 import { getDictionary, type Locale } from '@/lib/i18n'
+import { pageMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
+
+const ABOUT_SEO: Record<Locale, { title: string; description: string }> = {
+  uk: {
+    title: 'Про ManPrime — натуральні БАДи на медовій основі',
+    description: "Хто ми, чому обрали мед та натуральні компоненти, і як ManPrime підтримує чоловіче здоров'я. Без хімії та консервантів.",
+  },
+  ru: {
+    title: 'О ManPrime — натуральные БАДы на медовой основе',
+    description: 'Кто мы, почему выбрали мёд и натуральные компоненты, и как ManPrime поддерживает мужское здоровье. Без химии и консервантов.',
+  },
+  en: {
+    title: "About ManPrime — honey-based men's supplements",
+    description: "Who we are, why we chose honey and natural ingredients, and how ManPrime supports men's health. No chemicals, no preservatives.",
+  },
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const { lang } = await params
+  const s = ABOUT_SEO[lang]
+  return pageMetadata({ lang, path: '/about', title: s.title, description: s.description })
+}
 
 export default async function AboutPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
