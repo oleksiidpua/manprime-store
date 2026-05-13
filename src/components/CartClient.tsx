@@ -23,7 +23,7 @@ export default function CartClient({ dict, lang }: { dict: Dict; lang: Locale })
         <div className="text-5xl mb-6">🛒</div>
         <p className="text-[#8b9ab0] text-xl mb-8">{c.empty}</p>
         <Link
-          href={`/${lang}/catalog`}
+          href={`/${lang}/product/forte`}
           className="inline-block bg-[#b5622a] hover:bg-[#cc7033] text-[#e8eaf0] font-semibold px-10 py-4 uppercase tracking-widest text-sm transition-colors rounded-sm"
         >
           {c.continue}
@@ -96,7 +96,7 @@ export default function CartClient({ dict, lang }: { dict: Dict; lang: Locale })
           {c.checkout}
         </Link>
         <Link
-          href={`/${lang}/catalog`}
+          href={`/${lang}/product/forte`}
           className="block w-full text-center text-[#8b9ab0] hover:text-[#e8eaf0] text-sm mt-4 transition-colors"
         >
           ← {c.continue}

@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 
 const SITE_URL = 'https://manprime-store.vercel.app'
 const LOCALES = ['uk', 'ru', 'en'] as const
-const STATIC_ROUTES = ['', '/catalog', '/about', '/contacts'] as const
+const STATIC_ROUTES = ['', '/about', '/contacts', '/product/forte'] as const
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()

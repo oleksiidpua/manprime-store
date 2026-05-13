@@ -42,7 +42,7 @@ export default function Header({ dict, lang }: HeaderProps) {
   }, [pathname])
 
   const navLinks = [
-    { href: `/${lang}/catalog`, label: n.catalog },
+    { href: `/${lang}/product/forte`, label: n.catalog },
     { href: `/${lang}/about`, label: n.about },
     { href: `/${lang}/contacts`, label: n.contacts },
   ]
@@ -115,7 +115,7 @@ export default function Header({ dict, lang }: HeaderProps) {
           </Link>
 
           <Link
-            href={`/${lang}/catalog`}
+            href={`/${lang}/product/forte`}
             className="inline-flex items-center gap-1.5 bg-copper hover:bg-copper-hover text-background font-medium text-[12px] tracking-wide px-5 py-2.5 rounded-full transition-colors shadow-[0_4px_18px_rgba(212,165,98,0.3)]"
           >
             {buyLabel[lang]}
@@ -128,7 +128,7 @@ export default function Header({ dict, lang }: HeaderProps) {
         {/* Mobile right cluster: Buy pill + hamburger */}
         <div className="md:hidden flex items-center gap-2">
           <Link
-            href={`/${lang}/catalog`}
+            href={`/${lang}/product/forte`}
             className="inline-flex items-center gap-1.5 bg-copper hover:bg-copper-hover text-background font-medium text-[12px] tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-[0_4px_14px_rgba(212,165,98,0.3)]"
             aria-label={buyLabel[lang]}
           >
@@ -169,7 +169,7 @@ export default function Header({ dict, lang }: HeaderProps) {
           ))}
 
           <Link
-            href={`/${lang}/catalog`}
+            href={`/${lang}/product/forte`}
             className="mt-6 inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-medium text-sm tracking-wide px-6 py-3.5 rounded-full transition-colors"
           >
             {buyLabel[lang]}

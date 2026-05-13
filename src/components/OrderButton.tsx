@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Locale } from '@/lib/i18n'
 
@@ -112,8 +113,11 @@ const dict: Record<Locale, {
 
 export default function OrderButton({ lang, product }: OrderButtonProps) {
   const t = dict[lang]
+  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
   const [openedAt, setOpenedAt] = useState(0)
+
+  useEffect(() => setMounted(true), [])
   const [quantity, setQuantity] = useState(1)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -229,6 +233,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
         </svg>
       </button>
 
+      {mounted && createPortal(
       <AnimatePresence>
         {open && (
           <motion.div
@@ -236,7 +241,7 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/85 backdrop-blur-md p-0 md:p-5"
+            className="fixed inset-0 z-100 flex items-end md:items-center justify-center bg-black/85 backdrop-blur-md p-0 md:p-5"
             onClick={handleBackdropClick}
           >
             <motion.div
@@ -350,7 +355,9 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+      )}
     </>
   )
 }

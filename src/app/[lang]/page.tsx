@@ -1,53 +1,60 @@
-import Link from 'next/link'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 import HeroAnimated from '@/components/HeroAnimated'
+import OrderButton from '@/components/OrderButton'
 
-const FALLBACK_PRODUCTS: Product[] = [
-  {
-    id: '1', slug: 'classic',
-    nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic',
-    descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я.',
-    descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.',
-    descEn: 'Basic complex for potency and men\'s health.',
-    compUk: '', compRu: '', compEn: '',
-    price: 890, imageUrl: null, stock: 100, isActive: true,
-    createdAt: new Date(), updatedAt: new Date(),
-  },
-  {
-    id: '2', slug: 'forte',
-    nameUk: 'ManPrime Forte', nameRu: 'ManPrime Forte', nameEn: 'ManPrime Forte',
-    descUk: 'Посилена формула для максимальної підтримки тестостерону.',
-    descRu: 'Усиленная формула для максимальной поддержки тестостерона.',
-    descEn: 'Enhanced formula for maximum testosterone support.',
-    compUk: '', compRu: '', compEn: '',
-    price: 1290, imageUrl: null, stock: 100, isActive: true,
-    createdAt: new Date(), updatedAt: new Date(),
-  },
-  {
-    id: '3', slug: 'longevity',
-    nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity',
-    descUk: 'Комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.',
-    descRu: 'Комплекс для мужчин 40+ — здоровье, энергия и долголетие.',
-    descEn: 'Complex for men 40+ — health, energy and longevity.',
-    compUk: '', compRu: '', compEn: '',
-    price: 1490, imageUrl: null, stock: 100, isActive: true,
-    createdAt: new Date(), updatedAt: new Date(),
-  },
-]
+const FORTE_FALLBACK: Product = {
+  id: 'forte-fallback',
+  slug: 'forte',
+  nameUk: 'ManPrime Forte',
+  nameRu: 'ManPrime Forte',
+  nameEn: 'ManPrime Forte',
+  descUk: 'Посилена формула на медовій основі для підтримки тестостерону, потенції та чоловічої енергії. Без хімії, без побічних ефектів.',
+  descRu: 'Усиленная формула на медовой основе для поддержки тестостерона, потенции и мужской энергии. Без химии, без побочных эффектов.',
+  descEn: 'Enhanced honey-based formula supporting testosterone, potency and male energy. No chemicals, no side effects.',
+  compUk: 'Мед натуральний, екстракт женьшеню, маточне молочко, цинк, селен, L-аргінін, екстракт елеутерококу.',
+  compRu: 'Мёд натуральный, экстракт женьшеня, маточное молочко, цинк, селен, L-аргинин, экстракт элеутерококка.',
+  compEn: 'Natural honey, ginseng extract, royal jelly, zinc, selenium, L-arginine, eleuthero extract.',
+  price: 1290,
+  imageUrl: null,
+  stock: 100,
+  isActive: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
+
+const FEATURES_BY_LANG: Record<Locale, string[]> = {
+  uk: [
+    'Медова основа — швидке засвоєння',
+    'Підтримує рівень тестостерону',
+    'Натуральні компоненти, без хімії',
+    'Без побічних ефектів та звикання',
+  ],
+  ru: [
+    'Медовая основа — быстрое усвоение',
+    'Поддерживает уровень тестостерона',
+    'Натуральные компоненты, без химии',
+    'Без побочных эффектов и привыкания',
+  ],
+  en: [
+    'Honey base — fast absorption',
+    'Supports testosterone levels',
+    'Natural ingredients, no chemicals',
+    'No side effects or dependency',
+  ],
+}
 
 export default async function HomePage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
   const dict = await getDictionary(lang)
 
-  const dbProducts = await prisma.product.findMany({
-    where: { isActive: true },
-    take: 3,
-    orderBy: { createdAt: 'asc' },
-  }).catch(() => [] as Product[])
+  const dbForte = await prisma.product
+    .findFirst({ where: { slug: 'forte', isActive: true } })
+    .catch(() => null)
 
-  const products = dbProducts.length > 0 ? dbProducts : FALLBACK_PRODUCTS
+  const product: Product = dbForte ?? FORTE_FALLBACK
+  const features = FEATURES_BY_LANG[lang]
 
   const nameKey = `name${cap(lang)}` as 'nameUk' | 'nameRu' | 'nameEn'
   const descKey = `desc${cap(lang)}` as 'descUk' | 'descRu' | 'descEn'
@@ -128,71 +135,94 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
         </div>
       </section>
 
-      {/* PRODUCTS */}
+      {/* THE PRODUCT — single focal block */}
       <section className="py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-5 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <div>
-              <span className="text-copper text-[11px] font-medium tracking-[0.3em] uppercase">
-                {lang === 'uk' ? 'Колекція' : lang === 'ru' ? 'Коллекция' : 'Collection'}
-              </span>
-              <h2 className="font-serif text-4xl md:text-5xl text-foreground mt-3 max-w-xl leading-tight">
-                {dict.products.title}
-              </h2>
-            </div>
-            <Link
-              href={`/${lang}/catalog`}
-              className="inline-flex items-center gap-2 text-foreground hover:text-copper text-sm tracking-wide transition-colors group"
-            >
-              {lang === 'uk' ? 'Усі препарати' : lang === 'ru' ? 'Все препараты' : 'All products'}
-              <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </Link>
+        <div className="max-w-6xl mx-auto px-5 md:px-8">
+          <div className="text-center mb-16">
+            <span className="text-copper text-[11px] font-medium tracking-[0.3em] uppercase">
+              {lang === 'uk' ? 'Наш продукт' : lang === 'ru' ? 'Наш продукт' : 'Our product'}
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mt-3 leading-tight">
+              {lang === 'uk' ? <>Один продукт — <em className="italic text-copper font-normal">одна сила</em></>
+                : lang === 'ru' ? <>Один продукт — <em className="italic text-copper font-normal">одна сила</em></>
+                : <>One product — <em className="italic text-copper font-normal">one strength</em></>}
+            </h2>
+            <p className="text-muted text-base md:text-lg leading-relaxed mt-6 max-w-2xl mx-auto">
+              {lang === 'uk' ? 'Ми не розпорошуємо увагу. Одна формула, доведена результатом — для чоловіків, які знають що хочуть.'
+                : lang === 'ru' ? 'Мы не распыляем внимание. Одна формула, доказанная результатом — для мужчин, которые знают чего хотят.'
+                : "We don't spread thin. One formula, proven by results — for men who know what they want."}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-            {products.map((product) => (
-              <article
-                key={product.id}
-                className="group bg-surface border border-border hover:border-copper/50 rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1"
-              >
-                <div className="relative aspect-square bg-linear-to-br from-surface-2 to-surface flex items-center justify-center overflow-hidden">
-                  {product.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="relative w-32 h-44 rounded-md bg-linear-to-b from-[#0c1a16] to-[#1c352c] border border-copper/20 shadow-2xl flex flex-col items-center justify-between py-6 transition-transform duration-700 group-hover:scale-110">
-                      <div className="text-copper text-[8px] tracking-[0.3em] font-bold">MANPRIME</div>
-                      <div className="w-8 h-8 rounded-full border border-copper/40 flex items-center justify-center">
-                        <span className="text-copper text-lg">♂</span>
-                      </div>
-                      <div className="text-muted-2 text-[7px] tracking-[0.25em] uppercase">{product.slug}</div>
-                    </div>
-                  )}
+          <article className="bg-surface border border-border rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+            {/* Product visual */}
+            <div className="relative aspect-square md:aspect-auto bg-linear-to-br from-surface-2 to-surface flex items-center justify-center overflow-hidden border-b md:border-b-0 md:border-r border-border">
+              {product.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
+              ) : (
+                <div className="relative w-48 h-64 md:w-56 md:h-72 rounded-md bg-linear-to-b from-[#0c1a16] to-[#1c352c] border border-copper/30 shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex flex-col items-center justify-between py-10">
+                  <div className="text-copper text-[10px] tracking-[0.3em] font-bold">MANPRIME</div>
+                  <div className="w-12 h-12 rounded-full border border-copper/50 flex items-center justify-center">
+                    <span className="text-copper text-2xl">♂</span>
+                  </div>
+                  <div className="text-muted-2 text-[9px] tracking-[0.25em] uppercase">FORTE</div>
                 </div>
+              )}
+              <span className="absolute top-5 left-5 text-[10px] font-bold tracking-[0.25em] uppercase px-3 py-1.5 rounded-full bg-copper text-background">
+                TOP
+              </span>
+            </div>
 
-                <div className="p-6 md:p-7">
-                  <h3 className="font-serif text-2xl text-foreground mb-2">{product[nameKey]}</h3>
-                  <p className="text-muted text-[14px] leading-relaxed mb-6 line-clamp-2 min-h-10.5">
-                    {product[descKey]}
-                  </p>
-                  <div className="flex items-end justify-between pt-5 border-t border-border/40">
-                    <div>
-                      <span className="text-copper font-serif text-3xl">{product.price}</span>
-                      <span className="text-muted text-sm ml-1.5">{dict.products.uah}</span>
-                    </div>
-                    <Link
-                      href={`/${lang}/product/${product.slug}`}
-                      className="text-foreground hover:text-copper text-[13px] tracking-wide font-medium underline-offset-4 hover:underline transition-colors"
-                    >
-                      {lang === 'uk' ? 'Детальніше' : lang === 'ru' ? 'Подробнее' : 'Details'} →
-                    </Link>
+            {/* Content */}
+            <div className="p-8 md:p-12 flex flex-col">
+              <h3 className="font-serif text-3xl md:text-4xl text-foreground leading-tight">{product[nameKey]}</h3>
+              <p className="text-copper text-[12px] tracking-[0.25em] uppercase mt-2">
+                {lang === 'uk' ? 'Посилена формула' : lang === 'ru' ? 'Усиленная формула' : 'Enhanced formula'}
+              </p>
+
+              <p className="text-muted text-[15px] leading-relaxed mt-6">{product[descKey]}</p>
+
+              <ul className="mt-8 space-y-3">
+                {features.map((f) => (
+                  <li key={f} className="flex items-start gap-3 text-foreground/90 text-[14px]">
+                    <svg className="w-4 h-4 text-copper shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex items-end justify-between mt-10 pt-6 border-t border-border/60">
+                <div>
+                  <div className="text-muted-2 text-[10px] tracking-[0.25em] uppercase mb-1">
+                    {lang === 'uk' ? 'Ціна' : lang === 'ru' ? 'Цена' : 'Price'}
+                  </div>
+                  <div>
+                    <span className="text-copper font-serif text-4xl md:text-5xl">{product.price}</span>
+                    <span className="text-muted text-base ml-2">{dict.products.uah}</span>
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
+                <div className="flex items-center gap-1.5 text-[#4ade80] text-[11px] tracking-wider uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
+                  {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <OrderButton
+                  lang={lang}
+                  product={{
+                    id: product.id,
+                    slug: product.slug,
+                    name: product[nameKey],
+                    price: product.price,
+                  }}
+                />
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 

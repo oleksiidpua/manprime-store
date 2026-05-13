@@ -8,17 +8,34 @@ import { pageMetadata, SITE_URL } from '@/lib/seo'
 import type { Product } from '@prisma/client'
 import type { Metadata } from 'next'
 
-const OLD_PRICES: Record<string, number> = { classic: 1200, forte: 1700, longevity: 2000 }
+const OLD_PRICES: Record<string, number> = { forte: 1700 }
 
-const FALLBACK_PRODUCTS: Product[] = [
-  { id: '1', slug: 'classic', nameUk: 'ManPrime Classic', nameRu: 'ManPrime Classic', nameEn: 'ManPrime Classic', descUk: 'Базовий комплекс для підтримки потенції та чоловічого здоров\'я. Природні компоненти, перевірена формула.', descRu: 'Базовый комплекс для поддержки потенции и мужского здоровья.', descEn: 'Basic complex for potency and men\'s health support.', compUk: 'L-аргінін, Цинк, Вітамін D3, Екстракт кореня імбиру', compRu: 'L-аргинин, Цинк, Витамин D3, Экстракт корня имбиря', compEn: 'L-arginine, Zinc, Vitamin D3, Ginger root extract', price: 890, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
-  { id: '2', slug: 'forte', nameUk: 'ManPrime Forte', nameRu: 'ManPrime Forte', nameEn: 'ManPrime Forte', descUk: 'Посилена формула для максимальної підтримки чоловічого здоров\'я та рівня тестостерону.', descRu: 'Усиленная формула для максимальной поддержки мужского здоровья.', descEn: 'Enhanced formula for maximum men\'s health support.', compUk: 'Трибулус, Женьшень, Цинк, Магній, Вітаміни групи B', compRu: 'Трибулус, Женьшень, Цинк, Магний, Витамины группы B', compEn: 'Tribulus, Ginseng, Zinc, Magnesium, B vitamins', price: 1290, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
-  { id: '3', slug: 'longevity', nameUk: 'ManPrime Longevity', nameRu: 'ManPrime Longevity', nameEn: 'ManPrime Longevity', descUk: 'Спеціальний комплекс для чоловіків 40+ — здоров\'я, енергія та довголіття.', descRu: 'Специальный комплекс для мужчин 40+.', descEn: 'Special complex for men 40+.', compUk: 'Коензим Q10, Омега-3, Вітамін E, Ресвератрол, Цинк', compRu: 'Коэнзим Q10, Омега-3, Витамин E, Ресвератрол, Цинк', compEn: 'Coenzyme Q10, Omega-3, Vitamin E, Resveratrol, Zinc', price: 1490, imageUrl: null, stock: 100, isActive: true, createdAt: new Date(), updatedAt: new Date() },
-]
+const FORTE_FALLBACK: Product = {
+  id: 'forte-fallback',
+  slug: 'forte',
+  nameUk: 'ManPrime Forte',
+  nameRu: 'ManPrime Forte',
+  nameEn: 'ManPrime Forte',
+  descUk: 'Посилена формула на медовій основі для підтримки тестостерону, потенції та чоловічої енергії. Без хімії, без побічних ефектів.',
+  descRu: 'Усиленная формула на медовой основе для поддержки тестостерона, потенции и мужской энергии. Без химии, без побочных эффектов.',
+  descEn: 'Enhanced honey-based formula supporting testosterone, potency and male energy. No chemicals, no side effects.',
+  compUk: 'Мед натуральний, екстракт женьшеню, маточне молочко, цинк, селен, L-аргінін, екстракт елеутерококу.',
+  compRu: 'Мёд натуральный, экстракт женьшеня, маточное молочко, цинк, селен, L-аргинин, экстракт элеутерококка.',
+  compEn: 'Natural honey, ginseng extract, royal jelly, zinc, selenium, L-arginine, eleuthero extract.',
+  price: 1290,
+  imageUrl: null,
+  stock: 100,
+  isActive: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}
 
 async function loadProduct(slug: string): Promise<Product | null> {
-  const dbProduct = await prisma.product.findUnique({ where: { slug } }).catch(() => null)
-  return dbProduct ?? FALLBACK_PRODUCTS.find((p) => p.slug === slug) ?? null
+  if (slug !== 'forte') return null
+  const dbProduct = await prisma.product
+    .findUnique({ where: { slug } })
+    .catch(() => null)
+  return dbProduct ?? FORTE_FALLBACK
 }
 
 export async function generateMetadata({
@@ -84,8 +101,6 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
       <div className="max-w-5xl mx-auto px-4 py-12">
         <nav className="text-sm text-[#8b9ab0] mb-10 flex items-center gap-2">
           <Link href={`/${lang}`} className="hover:text-[#c9a84c] transition-colors">{dict.nav.home}</Link>
-          <span className="text-[#2a3347]">›</span>
-          <Link href={`/${lang}/catalog`} className="hover:text-[#c9a84c] transition-colors">{dict.nav.catalog}</Link>
           <span className="text-[#2a3347]">›</span>
           <span className="text-[#8b9ab0]">{product[nameKey]}</span>
         </nav>

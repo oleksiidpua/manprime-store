@@ -18,7 +18,7 @@ export default function Footer({ dict, lang = 'uk' }: FooterProps) {
     {
       title: lang === 'uk' ? 'Магазин' : lang === 'ru' ? 'Магазин' : 'Shop',
       links: [
-        { href: `/${lang}/catalog`, label: dict.nav.catalog },
+        { href: `/${lang}/product/forte`, label: dict.nav.catalog },
         { href: `/${lang}/auth`, label: dict.nav.login || 'Login' },
       ],
     },

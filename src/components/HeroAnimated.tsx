@@ -95,7 +95,7 @@ export default function HeroAnimated({ lang, ctaPrimary, ctaSecondary }: HeroAni
           className="flex flex-col sm:flex-row gap-3 justify-center mt-12"
         >
           <Link
-            href={`/${lang}/catalog`}
+            href={`/${lang}/product/forte`}
             className="inline-flex items-center justify-center gap-2 bg-copper hover:bg-copper-hover text-background font-medium px-9 py-4 text-sm tracking-wide transition-colors rounded-full shadow-[0_8px_30px_rgba(212,165,98,0.35)]"
           >
             {ctaPrimary}
