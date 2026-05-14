@@ -49,7 +49,7 @@ export default function BuyBox({
               type="button"
               onClick={() => setSelectedId(v.id)}
               aria-pressed={isSelected}
-              className={`relative text-left rounded-2xl p-3 md:p-4 border transition-all ${
+              className={`relative text-left rounded-2xl p-2.5 md:p-4 border transition-all ${
                 isSelected
                   ? 'border-copper bg-copper/5 shadow-[0_0_0_1px_var(--copper)]'
                   : 'border-border bg-surface hover:border-copper/40'
@@ -60,8 +60,8 @@ export default function BuyBox({
                   {v.badge}
                 </span>
               )}
-              <div className="flex items-center gap-3">
-                <div className="relative w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-lg bg-background/50 flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="relative w-10 h-10 md:w-16 md:h-16 shrink-0 rounded-lg bg-background/50 flex items-center justify-center overflow-hidden">
                   <Image
                     src={v.image}
                     alt={v.variantLabel}
@@ -71,24 +71,17 @@ export default function BuyBox({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-serif text-foreground text-[15px] md:text-base leading-tight">
+                  <p className="font-serif text-foreground text-[14px] md:text-base leading-tight">
                     {v.variantLabel}
                   </p>
-                  <p className="text-muted-2 text-[11px] tracking-wide mt-0.5">{v.variantSub}</p>
-                  <div className="flex items-baseline gap-2 mt-1.5">
-                    <span className="text-copper font-serif text-lg leading-none">
+                  <p className="hidden md:block text-muted-2 text-[11px] tracking-wide mt-0.5">{v.variantSub}</p>
+                  <div className="flex items-baseline gap-1.5 md:gap-2 mt-1 md:mt-1.5">
+                    <span className="text-copper font-serif text-base md:text-lg leading-none">
                       {v.price}
                     </span>
-                    <span className="text-muted line-through text-[12px]">{v.oldPrice}</span>
-                    <span className="text-muted-2 text-[10px]">{uahLabel}</span>
+                    <span className="text-muted line-through text-[11px] md:text-[12px]">{v.oldPrice}</span>
                   </div>
                 </div>
-                <span
-                  aria-hidden
-                  className={`shrink-0 w-4 h-4 rounded-full border-2 transition-colors ${
-                    isSelected ? 'border-copper bg-copper' : 'border-border'
-                  }`}
-                />
               </div>
             </button>
           )
@@ -98,12 +91,12 @@ export default function BuyBox({
       {/* Selected price + CTA */}
       {variant === 'full' ? (
         <div className="mt-7 flex flex-col gap-5">
-          <div className="flex items-end gap-5">
+          <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
             <div>
               <div className="text-muted-2 text-[10px] tracking-[0.25em] uppercase mb-1">
                 {oldPriceLabel}
               </div>
-              <div className="text-muted line-through text-lg">
+              <div className="text-muted line-through text-base md:text-lg">
                 {selected.oldPrice} {uahLabel}
               </div>
             </div>
@@ -114,8 +107,8 @@ export default function BuyBox({
               </div>
             </div>
             {inStockLabel && (
-              <div className="ml-auto flex items-center gap-2 text-[#4ade80] text-[11px] tracking-wider uppercase pb-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
+              <div className="basis-full md:basis-auto md:ml-auto flex items-center gap-2 text-[#4ade80] text-[11px] tracking-wider uppercase pb-2 whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] shrink-0" />
                 {inStockLabel}
               </div>
             )}
