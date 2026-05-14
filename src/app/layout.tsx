@@ -7,6 +7,7 @@ const SITE_URL = "https://manprime-store.vercel.app";
 const GA_ID = "G-0SWCELS6C7";
 const FB_VERIFICATION = "qv5sl2g0gi6zzf20gcfe6i9fonvz96";
 const META_PIXEL_ID = "26483128744702559";
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
 
 const lora = Lora({
   variable: "--font-lora",
@@ -126,6 +127,17 @@ export default function RootLayout({
             src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
           />
         </noscript>
+        {CLARITY_ID && (
+          <Script id="ms-clarity" strategy="afterInteractive">
+            {`
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "${CLARITY_ID}");
+            `}
+          </Script>
+        )}
         <Script
           id="ld-org"
           type="application/ld+json"

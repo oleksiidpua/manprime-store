@@ -3,12 +3,17 @@ import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
-import OrderButton from '@/components/OrderButton'
+import BuyBox, { type BuyVariant } from '@/components/BuyBox'
+import ReviewsSection from '@/components/ReviewsSection'
+import { loadApprovedReviews } from '@/lib/reviews'
 import { pageMetadata, SITE_URL } from '@/lib/seo'
 import type { Product } from '@prisma/client'
 import type { Metadata } from 'next'
 
-const OLD_PRICE = 1700
+const PACK_PRICE = 1290
+const PACK_OLD = 1700
+const SINGLE_PRICE = 250
+const SINGLE_OLD = 290
 
 const ROYAL_HONEY_FALLBACK: Product = {
   id: 'forte-fallback',
@@ -108,6 +113,13 @@ interface Content {
   finalSub: string
   deliveryNote: string
   oldPriceLabel: string
+  uah: string
+  singleLabel: string
+  singleSub: string
+  singleBadge: string
+  packLabel: string
+  packSub: string
+  packBadge: string
 }
 
 const CONTENT: Record<Lang, Content> = {
@@ -242,6 +254,13 @@ const CONTENT: Record<Lang, Content> = {
     finalSub: 'Замов зараз — менеджер передзвонить протягом 15 хвилин для підтвердження.',
     deliveryNote: 'Оплата при отриманні · Нова Пошта або Укрпошта',
     oldPriceLabel: 'Стара ціна',
+    uah: 'грн',
+    singleLabel: '1 стик',
+    singleSub: 'Спробувати',
+    singleBadge: 'Проба',
+    packLabel: '12 стиків',
+    packSub: 'Повний курс',
+    packBadge: 'Вигідно',
   },
   ru: {
     tagline: 'The Ultimate Power Source',
@@ -374,6 +393,13 @@ const CONTENT: Record<Lang, Content> = {
     finalSub: 'Закажи сейчас — менеджер перезвонит в течение 15 минут для подтверждения.',
     deliveryNote: 'Оплата при получении · Нова Пошта или Укрпошта',
     oldPriceLabel: 'Старая цена',
+    uah: 'грн',
+    singleLabel: '1 стик',
+    singleSub: 'Попробовать',
+    singleBadge: 'Проба',
+    packLabel: '12 стиков',
+    packSub: 'Полный курс',
+    packBadge: 'Выгодно',
   },
   en: {
     tagline: 'The Ultimate Power Source',
@@ -506,6 +532,13 @@ const CONTENT: Record<Lang, Content> = {
     finalSub: 'Order now — our manager will call you within 15 minutes to confirm.',
     deliveryNote: 'Pay on delivery · Nova Poshta or Ukrposhta',
     oldPriceLabel: 'Old price',
+    uah: 'UAH',
+    singleLabel: '1 sachet',
+    singleSub: 'Try first',
+    singleBadge: 'Sample',
+    packLabel: '12 sachets',
+    packSub: 'Full course',
+    packBadge: 'Best value',
   },
 }
 
@@ -524,14 +557,34 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
   const c = CONTENT[lang]
   const nameKey = `name${cap(lang)}` as 'nameUk' | 'nameRu' | 'nameEn'
 
-  const orderProduct = {
-    id: product.id,
-    slug: product.slug,
-    name: product[nameKey],
-    price: product.price,
-  }
+  const reviewStats = await loadApprovedReviews(0).catch(() => ({ total: 0, averageRating: 0, reviews: [] }))
 
-  const productLd = {
+  const variants: BuyVariant[] = [
+    {
+      id: 'forte-1stik',
+      slug: 'forte-1stik',
+      productName: product[nameKey],
+      variantLabel: c.singleLabel,
+      variantSub: c.singleSub,
+      badge: c.singleBadge,
+      price: SINGLE_PRICE,
+      oldPrice: SINGLE_OLD,
+      image: '/products/royal-honey-1stik.png',
+    },
+    {
+      id: 'forte',
+      slug: product.slug,
+      productName: product[nameKey],
+      variantLabel: c.packLabel,
+      variantSub: c.packSub,
+      badge: c.packBadge,
+      price: PACK_PRICE,
+      oldPrice: PACK_OLD,
+      image: product.imageUrl ?? '/products/royal-honey-front.png',
+    },
+  ]
+
+  const productLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product[nameKey],
@@ -540,12 +593,56 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
     brand: { '@type': 'Brand', name: 'Royal Honey by Kingdom Honey' },
     image: [`${SITE_URL}${product.imageUrl ?? '/products/royal-honey-front.png'}`],
     offers: {
-      '@type': 'Offer',
+      '@type': 'AggregateOffer',
       url: `${SITE_URL}/${lang}/product/${product.slug}`,
       priceCurrency: 'UAH',
-      price: product.price,
+      lowPrice: SINGLE_PRICE,
+      highPrice: PACK_PRICE,
+      offerCount: 2,
       availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
     },
+  }
+
+  if (reviewStats.total > 0) {
+    productLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: reviewStats.averageRating,
+      reviewCount: reviewStats.total,
+      bestRating: 5,
+      worstRating: 1,
+    }
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'ManPrime',
+        item: `${SITE_URL}/${lang}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: product[nameKey],
+        item: `${SITE_URL}/${lang}/product/${product.slug}`,
+      },
+    ],
   }
 
   return (
@@ -554,6 +651,16 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
         id="ld-product"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
+      <Script
+        id="ld-faq"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
+      <Script
+        id="ld-breadcrumb"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       {/* HERO */}
@@ -608,23 +715,15 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
               ))}
             </ul>
 
-            <div className="mt-10 flex items-end gap-5">
-              <div>
-                <div className="text-muted-2 text-[10px] tracking-[0.25em] uppercase mb-1">{c.oldPriceLabel}</div>
-                <div className="text-muted line-through text-lg">{OLD_PRICE} грн</div>
-              </div>
-              <div>
-                <div className="text-copper text-[10px] tracking-[0.25em] uppercase mb-1">UAH</div>
-                <div className="text-copper font-serif text-5xl md:text-6xl leading-none">{product.price}</div>
-              </div>
-              <div className="ml-auto flex items-center gap-2 text-[#4ade80] text-[11px] tracking-wider uppercase pb-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
-                {c.inStock}
-              </div>
-            </div>
-
-            <div className="mt-7 max-w-md">
-              <OrderButton lang={lang} product={orderProduct} />
+            <div className="mt-10">
+              <BuyBox
+                lang={lang}
+                variants={variants}
+                oldPriceLabel={c.oldPriceLabel}
+                uahLabel={c.uah}
+                inStockLabel={c.inStock}
+                variant="full"
+              />
             </div>
 
             <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-muted-2 text-[12px] tracking-wide">
@@ -781,6 +880,9 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
         </div>
       </section>
 
+      {/* REVIEWS */}
+      <ReviewsSection lang={lang} />
+
       {/* FAQ */}
       <section className="py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-5 md:px-8">
@@ -819,14 +921,15 @@ export default async function ProductPage({ params }: { params: Promise<{ lang: 
           <h2 className="font-serif text-4xl md:text-6xl text-foreground mt-4 leading-tight">{c.finalTitle}</h2>
           <p className="text-muted text-base md:text-lg leading-relaxed mt-6 max-w-xl mx-auto">{c.finalSub}</p>
 
-          <div className="mt-10 flex flex-col items-center gap-5">
-            <div className="flex items-end gap-3">
-              <span className="text-muted line-through text-lg">{OLD_PRICE}</span>
-              <span className="text-copper font-serif text-5xl md:text-6xl leading-none">{product.price}</span>
-              <span className="text-muted text-base pb-2">грн</span>
-            </div>
-            <div className="w-full max-w-sm">
-              <OrderButton lang={lang} product={orderProduct} />
+          <div className="mt-10 flex flex-col items-center gap-6">
+            <div className="w-full max-w-lg">
+              <BuyBox
+                lang={lang}
+                variants={variants}
+                oldPriceLabel={c.oldPriceLabel}
+                uahLabel={c.uah}
+                variant="compact"
+              />
             </div>
             <p className="text-muted-2 text-[12px] tracking-wide">{c.deliveryNote}</p>
           </div>

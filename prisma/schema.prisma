@@ -178,3 +178,21 @@ enum CallbackStatus {
   DONE
   CANCELLED
 }
+
+model Review {
+  id         String       @id @default(cuid())
+  authorName String
+  rating     Int
+  text       String
+  city       String?
+  status     ReviewStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+
+  @@index([status, createdAt(sort: Desc)])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

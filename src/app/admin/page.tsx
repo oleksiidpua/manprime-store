@@ -15,14 +15,15 @@ export default async function AdminPage() {
   const user = await getAdminUser()
   if (!user) redirect('/uk/auth')
 
-  const [products, orders] = await Promise.all([
+  const [products, orders, reviews] = await Promise.all([
     prisma.product.findMany({ orderBy: { createdAt: 'asc' } }).catch(() => []),
     prisma.order.findMany({
       include: { items: { include: { product: true } }, shipment: true },
       orderBy: { createdAt: 'desc' },
       take: 50,
     }).catch(() => []),
+    prisma.review.findMany({ orderBy: { createdAt: 'desc' }, take: 100 }).catch(() => []),
   ])
 
-  return <AdminClient products={products} orders={orders} />
+  return <AdminClient products={products} orders={orders} reviews={reviews} />
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Product, Order, OrderItem, Shipment } from '@prisma/client'
+import type { Product, Order, OrderItem, Shipment, Review } from '@prisma/client'
 
 type OrderWithRelations = Order & {
   items: (OrderItem & { product: Product })[]
@@ -11,13 +11,36 @@ type OrderWithRelations = Order & {
 export default function AdminClient({
   products,
   orders,
+  reviews: initialReviews,
 }: {
   products: Product[]
   orders: OrderWithRelations[]
+  reviews: Review[]
 }) {
-  const [tab, setTab] = useState<'orders' | 'products'>('orders')
+  const [tab, setTab] = useState<'orders' | 'products' | 'reviews'>('orders')
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [saving, setSaving] = useState(false)
+  const [reviews, setReviews] = useState<Review[]>(initialReviews)
+  const pendingReviewsCount = reviews.filter((r) => r.status === 'PENDING').length
+
+  async function updateReviewStatus(id: string, status: 'APPROVED' | 'REJECTED' | 'PENDING') {
+    const res = await fetch(`/api/admin/reviews/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    })
+    if (res.ok) {
+      setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)))
+    }
+  }
+
+  async function deleteReview(id: string) {
+    if (!confirm('Видалити цей відгук назавжди?')) return
+    const res = await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE' })
+    if (res.ok) {
+      setReviews((prev) => prev.filter((r) => r.id !== id))
+    }
+  }
 
   const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -73,6 +96,17 @@ export default function AdminClient({
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === 'products' ? 'bg-orange-500 text-white' : 'hover:bg-gray-100'}`}
           >
             Товари ({products.length})
+          </button>
+          <button
+            onClick={() => setTab('reviews')}
+            className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors ${tab === 'reviews' ? 'bg-orange-500 text-white' : 'hover:bg-gray-100'}`}
+          >
+            Відгуки ({reviews.length})
+            {pendingReviewsCount > 0 && tab !== 'reviews' && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {pendingReviewsCount}
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -130,6 +164,94 @@ export default function AdminClient({
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {tab === 'reviews' && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">
+              Відгуки
+              {pendingReviewsCount > 0 && (
+                <span className="ml-3 bg-yellow-100 text-yellow-700 text-xs font-medium px-3 py-1 rounded-full">
+                  {pendingReviewsCount} на модерації
+                </span>
+              )}
+            </h2>
+            {reviews.length === 0 ? (
+              <p className="text-gray-500">Поки що немає відгуків.</p>
+            ) : (
+              reviews.map((r) => {
+                const statusColor =
+                  r.status === 'APPROVED'
+                    ? 'bg-green-100 text-green-700'
+                    : r.status === 'REJECTED'
+                    ? 'bg-red-100 text-red-700'
+                    : 'bg-yellow-100 text-yellow-700'
+                return (
+                  <div key={r.id} className="bg-white rounded-xl p-5 shadow-sm">
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                      <div>
+                        <p className="font-semibold">{r.authorName}</p>
+                        <p className="text-xs text-gray-500">
+                          {r.city ? `${r.city} · ` : ''}
+                          {new Date(r.createdAt).toLocaleString('uk-UA')}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((n) => (
+                            <svg
+                              key={n}
+                              className={`w-4 h-4 ${n <= r.rating ? 'text-orange-500' : 'text-gray-300'}`}
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                          ))}
+                        </div>
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${statusColor}`}>
+                          {r.status}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{r.text}</p>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-2">
+                      {r.status !== 'APPROVED' && (
+                        <button
+                          onClick={() => updateReviewStatus(r.id, 'APPROVED')}
+                          className="bg-green-500 hover:bg-green-600 text-white text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          ✓ Опублікувати
+                        </button>
+                      )}
+                      {r.status !== 'REJECTED' && (
+                        <button
+                          onClick={() => updateReviewStatus(r.id, 'REJECTED')}
+                          className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          ✕ Відхилити
+                        </button>
+                      )}
+                      {r.status !== 'PENDING' && (
+                        <button
+                          onClick={() => updateReviewStatus(r.id, 'PENDING')}
+                          className="border border-gray-200 hover:bg-gray-50 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          ↺ Повернути в модерацію
+                        </button>
+                      )}
+                      <button
+                        onClick={() => deleteReview(r.id)}
+                        className="ml-auto text-red-500 hover:text-red-700 text-xs font-medium px-3 py-1.5 transition-colors"
+                      >
+                        Видалити
+                      </button>
+                    </div>
+                  </div>
+                )
+              })
+            )}
           </div>
         )}
 

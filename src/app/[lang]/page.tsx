@@ -3,7 +3,8 @@ import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 import HeroAnimated from '@/components/HeroAnimated'
-import OrderButton from '@/components/OrderButton'
+import BuyBox, { type BuyVariant } from '@/components/BuyBox'
+import ReviewsSection from '@/components/ReviewsSection'
 
 const FORTE_FALLBACK: Product = {
   id: 'forte-fallback',
@@ -23,6 +24,52 @@ const FORTE_FALLBACK: Product = {
   isActive: true,
   createdAt: new Date(),
   updatedAt: new Date(),
+}
+
+const BUYBOX_LABELS: Record<Locale, {
+  oldPriceLabel: string
+  uah: string
+  inStock: string
+  singleLabel: string
+  singleSub: string
+  singleBadge: string
+  packLabel: string
+  packSub: string
+  packBadge: string
+}> = {
+  uk: {
+    oldPriceLabel: 'Стара ціна',
+    uah: 'грн',
+    inStock: 'В наявності',
+    singleLabel: '1 стик',
+    singleSub: 'Спробувати',
+    singleBadge: 'Проба',
+    packLabel: '12 стиків',
+    packSub: 'Повний курс',
+    packBadge: 'Вигідно',
+  },
+  ru: {
+    oldPriceLabel: 'Старая цена',
+    uah: 'грн',
+    inStock: 'В наличии',
+    singleLabel: '1 стик',
+    singleSub: 'Попробовать',
+    singleBadge: 'Проба',
+    packLabel: '12 стиков',
+    packSub: 'Полный курс',
+    packBadge: 'Выгодно',
+  },
+  en: {
+    oldPriceLabel: 'Old price',
+    uah: 'UAH',
+    inStock: 'In stock',
+    singleLabel: '1 sachet',
+    singleSub: 'Try first',
+    singleBadge: 'Sample',
+    packLabel: '12 sachets',
+    packSub: 'Full course',
+    packBadge: 'Best value',
+  },
 }
 
 const FEATURES_BY_LANG: Record<Locale, string[]> = {
@@ -56,9 +103,35 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
 
   const product: Product = dbForte ?? FORTE_FALLBACK
   const features = FEATURES_BY_LANG[lang]
+  const labels = BUYBOX_LABELS[lang]
 
   const nameKey = `name${cap(lang)}` as 'nameUk' | 'nameRu' | 'nameEn'
   const descKey = `desc${cap(lang)}` as 'descUk' | 'descRu' | 'descEn'
+
+  const variants: BuyVariant[] = [
+    {
+      id: 'forte-1stik',
+      slug: 'forte-1stik',
+      productName: product[nameKey],
+      variantLabel: labels.singleLabel,
+      variantSub: labels.singleSub,
+      badge: labels.singleBadge,
+      price: 250,
+      oldPrice: 290,
+      image: '/products/royal-honey-1stik.png',
+    },
+    {
+      id: 'forte',
+      slug: product.slug,
+      productName: product[nameKey],
+      variantLabel: labels.packLabel,
+      variantSub: labels.packSub,
+      badge: labels.packBadge,
+      price: product.price,
+      oldPrice: 1700,
+      image: product.imageUrl ?? '/products/royal-honey-front.png',
+    },
+  ]
 
   return (
     <>
@@ -203,38 +276,23 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
                 ))}
               </ul>
 
-              <div className="flex items-end justify-between mt-10 pt-6 border-t border-border/60">
-                <div>
-                  <div className="text-muted-2 text-[10px] tracking-[0.25em] uppercase mb-1">
-                    {lang === 'uk' ? 'Стара ціна' : lang === 'ru' ? 'Старая цена' : 'Old price'}
-                  </div>
-                  <div className="text-muted line-through text-base mb-2">1700 {dict.products.uah}</div>
-                  <div>
-                    <span className="text-copper font-serif text-4xl md:text-5xl">{product.price}</span>
-                    <span className="text-muted text-base ml-2">{dict.products.uah}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 text-[#4ade80] text-[11px] tracking-wider uppercase">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
-                  {lang === 'uk' ? 'В наявності' : lang === 'ru' ? 'В наличии' : 'In stock'}
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <OrderButton
+              <div className="mt-10 pt-6 border-t border-border/60">
+                <BuyBox
                   lang={lang}
-                  product={{
-                    id: product.id,
-                    slug: product.slug,
-                    name: product[nameKey],
-                    price: product.price,
-                  }}
+                  variants={variants}
+                  oldPriceLabel={labels.oldPriceLabel}
+                  uahLabel={labels.uah}
+                  inStockLabel={labels.inStock}
+                  variant="full"
                 />
               </div>
             </div>
           </article>
         </div>
       </section>
+
+      {/* REVIEWS */}
+      <ReviewsSection lang={lang} />
 
       {/* DELIVERY */}
       <section className="border-t border-border bg-surface/30">
