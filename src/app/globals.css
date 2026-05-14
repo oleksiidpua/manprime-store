@@ -80,6 +80,107 @@ html {
   border-radius: 2px;
 }
 
+/* Article body styles for blog posts (markdown-rendered HTML) */
+.prose-article {
+  color: var(--foreground);
+  font-size: 17px;
+  line-height: 1.75;
+}
+.prose-article > * + * { margin-top: 1.1em; }
+.prose-article h2 {
+  font-family: var(--font-lora), Georgia, serif;
+  font-weight: 500;
+  font-size: 1.85rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--foreground);
+  margin-top: 2.4em;
+  margin-bottom: 0.5em;
+}
+.prose-article h3 {
+  font-family: var(--font-lora), Georgia, serif;
+  font-weight: 500;
+  font-size: 1.35rem;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  color: var(--foreground);
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+}
+.prose-article p { color: var(--foreground); opacity: 0.92; }
+.prose-article a {
+  color: var(--copper);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+}
+.prose-article a:hover { color: var(--copper-hover); }
+.prose-article strong { color: var(--foreground); font-weight: 600; }
+.prose-article em { font-style: italic; color: var(--foreground); }
+.prose-article ul, .prose-article ol {
+  padding-left: 1.4em;
+}
+.prose-article ul { list-style: none; }
+.prose-article ul > li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--copper);
+  margin-left: -1.1em;
+  margin-right: 0.7em;
+  vertical-align: middle;
+  transform: translateY(-2px);
+}
+.prose-article ol { list-style: decimal; }
+.prose-article ol > li::marker { color: var(--copper); font-weight: 600; }
+.prose-article li { margin-top: 0.6em; }
+.prose-article blockquote {
+  border-left: 3px solid var(--copper);
+  padding: 0.4em 0 0.4em 1.2em;
+  font-style: italic;
+  color: var(--muted);
+  background: var(--copper-soft);
+  border-radius: 0 8px 8px 0;
+}
+.prose-article code {
+  background: var(--surface);
+  color: var(--copper);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.92em;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.prose-article hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.5em 0;
+}
+.prose-article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  margin: 1.4em 0;
+}
+.prose-article th, .prose-article td {
+  border: 1px solid var(--border);
+  padding: 0.65em 0.9em;
+  text-align: left;
+}
+.prose-article th {
+  background: var(--surface);
+  color: var(--copper);
+  font-weight: 600;
+}
+.prose-article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 1.5em 0;
+}
+
 /* Subtle noise texture for depth (optional, very low opacity) */
 .noise-overlay {
   position: relative;

@@ -43,6 +43,7 @@ export default function Header({ dict, lang }: HeaderProps) {
 
   const navLinks = [
     { href: `/${lang}/product/forte`, label: n.catalog },
+    { href: `/${lang}/blog`, label: n.blog },
     { href: `/${lang}/about`, label: n.about },
     { href: `/${lang}/contacts`, label: n.contacts },
   ]

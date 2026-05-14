@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/db'
+import { getUniqueSlugs } from '@/lib/blog'
 
 const SITE_URL = 'https://manprime-store.vercel.app'
 const LOCALES = ['uk', 'ru', 'en'] as const
-const STATIC_ROUTES = ['', '/about', '/contacts', '/product/forte'] as const
+const STATIC_ROUTES = ['', '/about', '/contacts', '/product/forte', '/blog'] as const
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
@@ -43,5 +44,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
 
-  return [...staticEntries, ...productEntries]
+  const blogSlugs = await getUniqueSlugs().catch(() => [] as string[])
+  const blogEntries: MetadataRoute.Sitemap = blogSlugs.flatMap((slug) =>
+    LOCALES.map((locale) => ({
+      url: `${SITE_URL}/${locale}/blog/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+      alternates: {
+        languages: Object.fromEntries(
+          LOCALES.map((l) => [l, `${SITE_URL}/${l}/blog/${slug}`])
+        ),
+      },
+    }))
+  )
+
+  return [...staticEntries, ...productEntries, ...blogEntries]
 }

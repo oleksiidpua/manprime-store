@@ -4,11 +4,23 @@
     "catalog": "Product",
     "about": "About",
     "contacts": "Contacts",
+    "blog": "Blog",
     "cart": "Cart",
     "account": "Account",
     "login": "Log In",
     "register": "Register",
     "logout": "Log Out"
+  },
+  "blog": {
+    "indexTitle": "Men's health journal",
+    "indexDescription": "How to support potency, testosterone and stamina naturally. Ingredient reviews, research, and practical tips.",
+    "tag": "Blog",
+    "empty": "No articles yet.",
+    "readMore": "Read more",
+    "backToList": "Back to all articles",
+    "ctaTitle": "Ready to try?",
+    "ctaDescription": "Royal Honey VIP — a natural honey-based formula with 5 Malaysian-tradition ingredients.",
+    "ctaButton": "View the product"
   },
   "hero": {
     "title": "ManPrime — Your strength,",
