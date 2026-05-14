@@ -57,15 +57,6 @@ export const metadata: Metadata = {
     description: "Медова основа, без хімії. Доставка по всій Україні.",
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      uk: `${SITE_URL}/uk`,
-      ru: `${SITE_URL}/ru`,
-      en: `${SITE_URL}/en`,
-      "x-default": `${SITE_URL}/uk`,
-    },
-  },
   other: {
     "facebook-domain-verification": FB_VERIFICATION,
   },

@@ -1,6 +1,17 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import CartClient from '@/components/CartClient'
+import { pageMetadata } from '@/lib/seo'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({ lang, path: '/cart', title: 'Cart', description: '', noIndex: true })
+}
 
 export default async function CartPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params

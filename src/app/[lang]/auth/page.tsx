@@ -1,5 +1,16 @@
+import type { Metadata } from 'next'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import AuthClient from '@/components/AuthClient'
+import { pageMetadata } from '@/lib/seo'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({ lang, path: '/auth', title: 'Sign in', description: '', noIndex: true })
+}
 
 export default async function AuthPage({
   params,

@@ -1,10 +1,45 @@
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
 import HeroAnimated from '@/components/HeroAnimated'
 import BuyBox, { type BuyVariant } from '@/components/BuyBox'
 import ReviewsSection from '@/components/ReviewsSection'
+import { pageMetadata } from '@/lib/seo'
+
+const HOME_META: Record<Locale, { title: string; description: string }> = {
+  uk: {
+    title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
+    description:
+      "Royal Honey VIP — натуральний концентрат на медовій основі для потенції, енергії та витривалості. Доставка по всій Україні.",
+  },
+  ru: {
+    title: 'ManPrime — Натуральные БАДы для мужского здоровья',
+    description:
+      'Royal Honey VIP — натуральный концентрат на медовой основе для потенции, энергии и выносливости. Доставка по всей Украине.',
+  },
+  en: {
+    title: "ManPrime — Natural supplements for men's health",
+    description:
+      'Royal Honey VIP — a natural honey-based concentrate for potency, energy, and stamina. Delivered across Ukraine.',
+  },
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  const m = HOME_META[lang]
+  return pageMetadata({
+    lang,
+    path: '',
+    title: m.title,
+    description: m.description,
+  })
+}
 
 const FORTE_FALLBACK: Product = {
   id: 'forte-fallback',
