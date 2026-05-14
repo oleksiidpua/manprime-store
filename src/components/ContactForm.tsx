@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { Locale } from '@/lib/i18n'
+import { fbTrack } from '@/lib/analytics'
 
 interface ContactFormProps {
   lang: Locale
@@ -121,6 +122,7 @@ export default function ContactForm({ lang }: ContactFormProps) {
         setState('error')
         return
       }
+      fbTrack('Contact')
       setState('success')
     } catch {
       setErrorMsg(t.errorGeneric)

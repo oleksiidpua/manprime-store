@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Locale } from '@/lib/i18n'
+import { fbTrack } from '@/lib/analytics'
 
 interface ProductSummary {
   id: string
@@ -210,6 +211,14 @@ export default function OrderButton({ lang, product }: OrderButtonProps) {
         setState('error')
         return
       }
+      fbTrack('Lead', {
+        value: total,
+        currency: 'UAH',
+        content_name: product.name,
+        content_ids: [product.slug],
+        content_type: 'product',
+        num_items: quantity,
+      })
       setState('success')
     } catch {
       setErrorMsg(t.errorGeneric)

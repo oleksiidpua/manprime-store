@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Locale } from '@/lib/i18n'
+import { fbTrack } from '@/lib/analytics'
 
 interface FloatingCallButtonProps {
   lang: Locale
@@ -172,6 +173,7 @@ export default function FloatingCallButton({ lang }: FloatingCallButtonProps) {
         setState('error')
         return
       }
+      fbTrack('Lead', { content_category: 'callback' })
       setState('success')
     } catch {
       setErrorMsg(t.errorGeneric)
