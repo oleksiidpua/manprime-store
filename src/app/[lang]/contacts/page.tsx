@@ -1,5 +1,6 @@
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { pageMetadata } from '@/lib/seo'
+import ContactForm from '@/components/ContactForm'
 import type { Metadata } from 'next'
 
 const CONTACTS_SEO: Record<Locale, { title: string; description: string }> = {
@@ -30,81 +31,80 @@ export default async function ContactsPage({ params }: { params: Promise<{ lang:
   const f = dict.footer
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16">
-      <div className="text-center mb-12">
-        <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">{c.title}</h1>
-        <div className="w-16 h-1 bg-accent mx-auto rounded-full" />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="space-y-6">
-          <div className="bg-cream rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">📧</span>
-              <h3 className="font-heading font-semibold text-lg">{c.email}</h3>
-            </div>
-            <a href={`mailto:${f.email}`} className="text-accent hover:underline">{f.email}</a>
-          </div>
-
-          <div className="bg-cream rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">📍</span>
-              <h3 className="font-heading font-semibold text-lg">{c.address}</h3>
-            </div>
-            <p className="text-muted">{f.city}</p>
-          </div>
-
-          <div className="bg-cream rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">🚚</span>
-              <h3 className="font-heading font-semibold text-lg">{dict.delivery_info.title}</h3>
-            </div>
-            <p className="text-muted text-sm">{dict.delivery_info.text}</p>
-          </div>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-5 md:px-8 py-16 md:py-24">
+        <div className="text-center mb-14">
+          <p className="text-copper text-[11px] tracking-[0.35em] uppercase font-medium">ManPrime</p>
+          <h1 className="font-serif text-4xl md:text-5xl text-foreground mt-3 leading-tight">{c.title}</h1>
+          <div className="w-12 h-px bg-copper/50 mx-auto mt-6" />
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm p-8">
-          <h2 className="font-heading text-2xl font-bold mb-6">{c.send_message}</h2>
-          <form className="space-y-4" action="/api/contact" method="POST">
-            <div>
-              <label className="block text-sm font-medium mb-1">{c.your_name}</label>
-              <input
-                type="text"
-                name="name"
-                required
-                className="w-full border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors bg-cream"
-                placeholder={c.your_name}
-              />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {/* Contact cards */}
+          <div className="space-y-4">
+            <div className="bg-surface border border-border rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-10 h-10 rounded-full border border-copper/40 bg-copper/5 flex items-center justify-center">
+                  <MailIcon className="w-4 h-4 text-copper" />
+                </span>
+                <h3 className="font-serif text-foreground text-lg">{c.email}</h3>
+              </div>
+              <a href={`mailto:${f.email}`} className="text-copper hover:text-copper-hover transition-colors text-[15px] break-all">
+                {f.email}
+              </a>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">{c.your_email}</label>
-              <input
-                type="email"
-                name="email"
-                required
-                className="w-full border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors bg-cream"
-                placeholder={c.your_email}
-              />
+
+            <div className="bg-surface border border-border rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-10 h-10 rounded-full border border-copper/40 bg-copper/5 flex items-center justify-center">
+                  <PinIcon className="w-4 h-4 text-copper" />
+                </span>
+                <h3 className="font-serif text-foreground text-lg">{c.address}</h3>
+              </div>
+              <p className="text-muted text-[15px]">{f.city}</p>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">{c.message}</label>
-              <textarea
-                name="message"
-                required
-                rows={5}
-                className="w-full border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors bg-cream resize-none"
-                placeholder={c.message}
-              />
+
+            <div className="bg-surface border border-border rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-10 h-10 rounded-full border border-copper/40 bg-copper/5 flex items-center justify-center">
+                  <TruckIcon className="w-4 h-4 text-copper" />
+                </span>
+                <h3 className="font-serif text-foreground text-lg">{dict.delivery_info.title}</h3>
+              </div>
+              <p className="text-muted text-[14px] leading-relaxed">{dict.delivery_info.text}</p>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-accent hover:bg-accent-hover text-white font-semibold py-3 rounded-full transition-colors"
-            >
-              {c.send}
-            </button>
-          </form>
+          </div>
+
+          {/* Message form (client component → POST /api/contact → Telegram) */}
+          <ContactForm lang={lang} />
+
         </div>
       </div>
     </div>
+  )
+}
+
+function MailIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  )
+}
+
+function PinIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s7-7.5 7-12a7 7 0 10-14 0c0 4.5 7 12 7 12z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  )
+}
+
+function TruckIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2 7h11v10H2zM13 10h5l3 3v4h-8M6 20a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4z" />
+    </svg>
   )
 }

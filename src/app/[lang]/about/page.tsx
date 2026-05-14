@@ -1,5 +1,6 @@
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { pageMetadata } from '@/lib/seo'
+import Logo from '@/components/Logo'
 import type { Metadata } from 'next'
 
 const ABOUT_SEO: Record<Locale, { title: string; description: string }> = {
@@ -55,12 +56,11 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: Lo
             </div>
           </div>
 
-          <div className="bg-[#1c2333] border border-[#2a3347] p-10 text-center rounded-sm">
-            <div className="w-20 h-20 border border-[#c9a84c]/30 flex items-center justify-center mx-auto mb-6 rounded-sm">
-              <span className="font-heading text-4xl text-[#c9a84c]">M</span>
+          <div className="bg-surface border border-border p-10 text-center rounded-2xl flex flex-col items-center">
+            <div className="mb-6 scale-125">
+              <Logo lang={lang} variant="default" />
             </div>
-            <h2 className="font-heading text-3xl text-[#e8eaf0] uppercase tracking-widest mb-2">ManPrime</h2>
-            <p className="text-[#8b9ab0] text-sm leading-relaxed">{dict.hero.subtitle}</p>
+            <p className="text-muted text-sm leading-relaxed mt-2">{dict.hero.subtitle}</p>
           </div>
         </div>
 

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getDictionary, type Locale } from '@/lib/i18n'
 import { prisma } from '@/lib/db'
 import type { Product } from '@prisma/client'
@@ -7,17 +8,17 @@ import OrderButton from '@/components/OrderButton'
 const FORTE_FALLBACK: Product = {
   id: 'forte-fallback',
   slug: 'forte',
-  nameUk: 'ManPrime Forte',
-  nameRu: 'ManPrime Forte',
-  nameEn: 'ManPrime Forte',
-  descUk: 'Посилена формула на медовій основі для підтримки тестостерону, потенції та чоловічої енергії. Без хімії, без побічних ефектів.',
-  descRu: 'Усиленная формула на медовой основе для поддержки тестостерона, потенции и мужской энергии. Без химии, без побочных эффектов.',
-  descEn: 'Enhanced honey-based formula supporting testosterone, potency and male energy. No chemicals, no side effects.',
-  compUk: 'Мед натуральний, екстракт женьшеню, маточне молочко, цинк, селен, L-аргінін, екстракт елеутерококу.',
-  compRu: 'Мёд натуральный, экстракт женьшеня, маточное молочко, цинк, селен, L-аргинин, экстракт элеутерококка.',
-  compEn: 'Natural honey, ginseng extract, royal jelly, zinc, selenium, L-arginine, eleuthero extract.',
+  nameUk: 'Royal Honey VIP',
+  nameRu: 'Royal Honey VIP',
+  nameEn: 'Royal Honey VIP',
+  descUk: 'Натуральний концентрат на медовій основі з 5 потужними інгредієнтами для чоловічої сили, енергії та витривалості.',
+  descRu: 'Натуральный концентрат на медовой основе с 5 мощными ингредиентами для мужской силы, энергии и выносливости.',
+  descEn: 'Natural honey-based concentrate with 5 powerful ingredients for male strength, energy and stamina.',
+  compUk: 'Мед натуральний, Tribulus Terrestris, Маса перуанська (Maca), Тонгкат Алі, Женьшень (Panax Ginseng).',
+  compRu: 'Мёд натуральный, Tribulus Terrestris, Мака перуанская (Maca), Тонгкат Али, Женьшень (Panax Ginseng).',
+  compEn: 'Honey, Tribulus Terrestris, Lepidium Peruvianum (Maca), Eurycoma Longifolia (Tongkat Ali), Panax Ginseng.',
   price: 1290,
-  imageUrl: null,
+  imageUrl: '/products/royal-honey-front.png',
   stock: 100,
   isActive: true,
   createdAt: new Date(),
@@ -156,10 +157,18 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
 
           <article className="bg-surface border border-border rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
             {/* Product visual */}
-            <div className="relative aspect-square md:aspect-auto bg-linear-to-br from-surface-2 to-surface flex items-center justify-center overflow-hidden border-b md:border-b-0 md:border-r border-border">
+            <div className="relative aspect-square md:aspect-auto md:min-h-140 bg-linear-to-br from-surface-2 to-surface flex items-center justify-center overflow-hidden border-b md:border-b-0 md:border-r border-border p-4 md:p-6">
+              {/* gold radial glow */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,165,98,0.26)_0%,transparent_65%)] pointer-events-none" />
               {product.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={product.imageUrl} alt={product[nameKey]} className="w-full h-full object-cover" />
+                <Image
+                  src={product.imageUrl}
+                  alt={product[nameKey]}
+                  width={720}
+                  height={560}
+                  className="relative w-full max-w-160 h-auto object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.5)]"
+                  priority
+                />
               ) : (
                 <div className="relative w-48 h-64 md:w-56 md:h-72 rounded-md bg-linear-to-b from-[#0c1a16] to-[#1c352c] border border-copper/30 shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex flex-col items-center justify-between py-10">
                   <div className="text-copper text-[10px] tracking-[0.3em] font-bold">MANPRIME</div>
@@ -169,7 +178,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
                   <div className="text-muted-2 text-[9px] tracking-[0.25em] uppercase">FORTE</div>
                 </div>
               )}
-              <span className="absolute top-5 left-5 text-[10px] font-bold tracking-[0.25em] uppercase px-3 py-1.5 rounded-full bg-copper text-background">
+              <span className="absolute top-5 left-5 text-[10px] font-bold tracking-[0.25em] uppercase px-3 py-1.5 rounded-full bg-copper text-background z-10">
                 TOP
               </span>
             </div>
@@ -197,8 +206,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
               <div className="flex items-end justify-between mt-10 pt-6 border-t border-border/60">
                 <div>
                   <div className="text-muted-2 text-[10px] tracking-[0.25em] uppercase mb-1">
-                    {lang === 'uk' ? 'Ціна' : lang === 'ru' ? 'Цена' : 'Price'}
+                    {lang === 'uk' ? 'Стара ціна' : lang === 'ru' ? 'Старая цена' : 'Old price'}
                   </div>
+                  <div className="text-muted line-through text-base mb-2">1700 {dict.products.uah}</div>
                   <div>
                     <span className="text-copper font-serif text-4xl md:text-5xl">{product.price}</span>
                     <span className="text-muted text-base ml-2">{dict.products.uah}</span>
