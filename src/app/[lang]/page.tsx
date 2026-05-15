@@ -151,8 +151,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
       variantLabel: labels.singleLabel,
       variantSub: labels.singleSub,
       badge: labels.singleBadge,
-      price: 250,
-      oldPrice: 290,
+      price: 159,
+      oldPrice: 180,
       image: '/products/royal-honey-1stik.png',
     },
     {

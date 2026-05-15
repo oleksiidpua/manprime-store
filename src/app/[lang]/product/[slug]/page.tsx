@@ -12,8 +12,8 @@ import type { Metadata } from 'next'
 
 const PACK_PRICE = 1290
 const PACK_OLD = 1700
-const SINGLE_PRICE = 250
-const SINGLE_OLD = 290
+const SINGLE_PRICE = 159
+const SINGLE_OLD = 180
 
 const ROYAL_HONEY_FALLBACK: Product = {
   id: 'forte-fallback',
