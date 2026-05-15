@@ -11,6 +11,12 @@ const OG_LOCALE: Record<Locale, string> = {
   en: 'en_US',
 }
 
+const HREFLANG: Record<Locale, string> = {
+  uk: 'uk-UA',
+  ru: 'ru-UA',
+  en: 'en',
+}
+
 interface PageMetadataInput {
   lang: Locale
   path: string
@@ -31,7 +37,7 @@ export function pageMetadata({
   const canonical = `${SITE_URL}/${lang}${path}`
   const languages: Record<string, string> = {}
   for (const l of LOCALES) {
-    languages[l] = `${SITE_URL}/${l}${path}`
+    languages[HREFLANG[l]] = `${SITE_URL}/${l}${path}`
   }
   languages['x-default'] = `${SITE_URL}/uk${path}`
 

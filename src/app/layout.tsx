@@ -30,16 +30,32 @@ export const metadata: Metadata = {
     template: "%s · ManPrime",
   },
   description:
-    "ManPrime — натуральні добавки для потенції, енергії та чоловічого здоров'я. Медова основа, без хімії. Доставка по всій Україні.",
+    "ManPrime — натуральні таблетки для потенції на медовій основі. Royal Honey VIP покращує ерекцію, продовжує секс, природно підвищує тестостерон. Без хімії. Доставка по всій Україні.",
   keywords: [
-    "БАДи для чоловіків",
-    "потенція",
-    "чоловіче здоров'я",
-    "тестостерон",
-    "натуральні добавки",
-    "медовий стик",
-    "БАД для потенції",
-    "ManPrime",
+    // brand
+    "ManPrime", "манпрайм", "Royal Honey VIP", "роял хоні",
+    // category
+    "БАД для потенції", "БАД для чоловіків", "таблетки для потенції", "природна віагра",
+    "натуральний афродизіак", "природний бустер тестостерону", "медовий стик",
+    "сашет для потенції", "БАД на медовій основі",
+    // problem / intent
+    "як підвищити потенцію", "як підвищити тестостерон природно",
+    "покращити ерекцію", "продовжити секс", "затримати еякуляцію",
+    "довше не кінчати", "засіб для чоловічої сили",
+    // ingredients
+    "тонгкат алі", "Eurycoma Longifolia", "мака перуанська", "tribulus terrestris",
+    "якірці сланкі", "Panax Ginseng", "малазійський мед",
+    // local
+    "купити БАД Україна", "БАД чоловічий Дніпро", "доставка Нова Пошта БАД",
+    "Royal Honey купити Україна", "оплата при отриманні чоловічий БАД",
+    // RU
+    "БАД для потенции", "таблетки для потенции", "натуральная виагра",
+    "улучшить эрекцию", "продлить секс", "задержать эякуляцию",
+    "природный бустер тестостерона", "купить БАД Украина",
+    // EN
+    "male enhancement pills", "natural testosterone booster",
+    "last longer in bed", "improve erection", "premature ejaculation pills",
+    "honey-based supplement Malaysia",
   ],
   authors: [{ name: "ManPrime" }],
   openGraph: {
@@ -47,14 +63,14 @@ export const metadata: Metadata = {
     locale: "uk_UA",
     url: SITE_URL,
     siteName: "ManPrime",
-    title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
+    title: "ManPrime — Натуральні таблетки для потенції | Royal Honey VIP",
     description:
-      "Медова основа, без хімії. Підтримка потенції, енергії та впевненості щодня.",
+      "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс. Без хімії. Доставка по Україні.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
-    description: "Медова основа, без хімії. Доставка по всій Україні.",
+    title: "ManPrime — Натуральні таблетки для потенції",
+    description: "Royal Honey VIP — покращити ерекцію, продовжити секс, природно підвищити тестостерон. Доставка по Україні.",
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   other: {
@@ -64,16 +80,28 @@ export const metadata: Metadata = {
 
 const ORG_JSON_LD = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "OnlineStore", "LocalBusiness"],
   name: "ManPrime",
+  alternateName: ["ManPrime Store", "Royal Honey VIP Україна"],
   url: SITE_URL,
   logo: `${SITE_URL}/logo-original.png`,
-  description: "Натуральні БАДи для чоловічого здоров'я на медовій основі.",
+  image: `${SITE_URL}/opengraph-image.png`,
+  description:
+    "ManPrime — натуральні БАДи для чоловічого здоров'я на медовій основі. Royal Honey VIP для потенції, тестостерону та витривалості. Доставка Новою Поштою по всій Україні.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Дніпро",
+    addressRegion: "Дніпропетровська область",
     addressCountry: "UA",
   },
+  areaServed: {
+    "@type": "Country",
+    name: "Ukraine",
+  },
+  currenciesAccepted: "UAH",
+  paymentAccepted: ["Cash on delivery", "LiqPay", "Monobank"],
+  priceRange: "₴₴",
+  knowsLanguage: ["uk", "ru", "en"],
   sameAs: [],
 };
 

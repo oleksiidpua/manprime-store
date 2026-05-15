@@ -126,11 +126,11 @@ const CONTENT: Record<Lang, Content> = {
   uk: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Натуральний концентрат на медовій основі з 5 потужними інгредієнтами малазійської традиції — для чоловічої сили, енергії та витривалості.',
+      'Натуральні таблетки для потенції на медовій основі — 5 інгредієнтів малазійської традиції. Покращують ерекцію, продовжують секс, природно підвищують тестостерон.',
     heroBullets: [
-      'Підвищує рівень тестостерону природно',
-      'Заряджає енергією на 24-48 годин',
-      'Без побічних ефектів та звикання',
+      'Покращує ерекцію та продовжує статеву близькість',
+      'Природний бустер тестостерону — без хімії',
+      'Швидкий ефект 24-48 годин, без побічних ефектів',
     ],
     inStock: 'В наявності',
     reassurance: ['Оплата при отриманні', 'Доставка 1-2 тижні', 'Знеособлена упаковка'],
@@ -265,11 +265,11 @@ const CONTENT: Record<Lang, Content> = {
   ru: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Натуральный концентрат на медовой основе с 5 мощными ингредиентами малайзийской традиции — для мужской силы, энергии и выносливости.',
+      'Натуральные таблетки для потенции на медовой основе — 5 ингредиентов малайзийской традиции. Улучшают эрекцию, продлевают секс, естественно повышают тестостерон.',
     heroBullets: [
-      'Повышает уровень тестостерона естественно',
-      'Заряжает энергией на 24-48 часов',
-      'Без побочных эффектов и привыкания',
+      'Улучшает эрекцию и продлевает половую близость',
+      'Природный бустер тестостерона — без химии',
+      'Быстрый эффект 24-48 часов, без побочных эффектов',
     ],
     inStock: 'В наличии',
     reassurance: ['Оплата при получении', 'Доставка 1-2 недели', 'Анонимная упаковка'],
@@ -404,11 +404,11 @@ const CONTENT: Record<Lang, Content> = {
   en: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Natural honey-based concentrate with 5 powerful Malaysian-tradition ingredients — for male strength, energy and stamina.',
+      'Natural male enhancement pills on a honey base — 5 Malaysian-tradition ingredients. Improve erection, help you last longer in bed, naturally boost testosterone.',
     heroBullets: [
-      'Naturally boosts testosterone levels',
-      'Energises you for 24-48 hours',
-      'No side effects, no dependency',
+      'Improves erection and helps you last longer in bed',
+      'Natural testosterone booster — no chemicals',
+      'Fast effect within 24-48 hours, no side effects',
     ],
     inStock: 'In stock',
     reassurance: ['Pay on delivery', 'Delivery 1-2 weeks', 'Discreet packaging'],

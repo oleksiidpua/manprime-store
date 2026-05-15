@@ -10,19 +10,19 @@ import { pageMetadata } from '@/lib/seo'
 
 const HOME_META: Record<Locale, { title: string; description: string }> = {
   uk: {
-    title: "ManPrime — Натуральні БАДи для чоловічого здоров'я",
+    title: "ManPrime — Натуральні таблетки для потенції | Royal Honey VIP",
     description:
-      "Royal Honey VIP — натуральний концентрат на медовій основі для потенції, енергії та витривалості. Доставка по всій Україні.",
+      "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс, повертає чоловічу впевненість. Без хімії. Доставка по Україні.",
   },
   ru: {
-    title: 'ManPrime — Натуральные БАДы для мужского здоровья',
+    title: 'ManPrime — Натуральные таблетки для потенции | Royal Honey VIP',
     description:
-      'Royal Honey VIP — натуральный концентрат на медовой основе для потенции, энергии и выносливости. Доставка по всей Украине.',
+      'Royal Honey VIP — природный бустер тестостерона на медовой основе. Улучшает эрекцию, продлевает секс, возвращает мужскую уверенность. Без химии. Доставка по Украине.',
   },
   en: {
-    title: "ManPrime — Natural supplements for men's health",
+    title: "ManPrime — Natural male enhancement pills | Royal Honey VIP",
     description:
-      'Royal Honey VIP — a natural honey-based concentrate for potency, energy, and stamina. Delivered across Ukraine.',
+      'Royal Honey VIP — a natural testosterone booster on a honey base. Improves erection, helps you last longer in bed, restores male confidence. No chemicals. Delivered across Ukraine.',
   },
 }
 

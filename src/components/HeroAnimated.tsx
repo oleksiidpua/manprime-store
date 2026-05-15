@@ -18,25 +18,25 @@ const slogans: Record<Locale, {
   desc: string
 }> = {
   uk: {
-    eyebrow: "Натуральне чоловіче здоров'я",
+    eyebrow: "Натуральні таблетки для потенції",
     line1: 'Сила, яку ти',
     italic: 'відчуєш',
     line3: 'щодня',
-    desc: 'Медова основа. Без хімії. З турботою про твоє тіло, енергію та впевненість.',
+    desc: "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс, повертає чоловічу впевненість. Без хімії, без побічних ефектів.",
   },
   ru: {
-    eyebrow: 'Натуральное мужское здоровье',
+    eyebrow: 'Натуральные таблетки для потенции',
     line1: 'Сила, которую',
     italic: 'чувствуешь',
     line3: 'каждый день',
-    desc: 'Медовая основа. Без химии. С заботой о твоём теле, энергии и уверенности.',
+    desc: 'Royal Honey VIP — природный бустер тестостерона на медовой основе. Улучшает эрекцию, продлевает секс, возвращает мужскую уверенность. Без химии, без побочных эффектов.',
   },
   en: {
-    eyebrow: "Natural men's health",
+    eyebrow: "Natural male enhancement",
     line1: 'The strength you',
     italic: 'feel',
     line3: 'every day',
-    desc: 'Honey-based. No chemicals. Made for your body, energy, and confidence.',
+    desc: 'Royal Honey VIP — a natural testosterone booster on a honey base. Improves erection, helps you last longer in bed, restores male confidence. No chemicals, no side effects.',
   },
 }
 
