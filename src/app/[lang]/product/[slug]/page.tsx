@@ -128,12 +128,12 @@ const CONTENT: Record<Lang, Content> = {
     subtitle:
       'Натуральний концентрат замість таблеток для потенції на медовій основі — 5 інгредієнтів малазійської традиції. Покращують ерекцію, продовжують секс, природно підвищують тестостерон.',
     heroBullets: [
-      'Покращує ерекцію та продовжує сексуальну витривалість',
+      'Покращує ерекцію та продовжує секс',
       'Природний бустер тестостерону — без хімії',
-      'Швидкий ефект 24-48 годин, без побічних ефектів',
+      'Швидкий ефект: дія через 1-2 години, тривалість 24-48 годин, без побічних',
     ],
     inStock: 'В наявності',
-    reassurance: ['Оплата при отриманні', 'Доставка 1-2 тижні', 'Знеособлена упаковка'],
+    reassurance: ['Оплата при отриманні', 'Доставка 1-2 дні', 'Знеособлена упаковка'],
     trustItems: [
       { title: '100% натуральний', desc: 'Без хімії, барвників та консервантів' },
       { title: 'Сертифікат HACCP', desc: 'Виробник Kingdom Honey, Малайзія' },
@@ -267,12 +267,12 @@ const CONTENT: Record<Lang, Content> = {
     subtitle:
       'Натуральный концентрат вместо таблеток для потенции на медовой основе — 5 ингредиентов малайзийской традиции. Улучшают эрекцию, продлевают секс, естественно повышают тестостерон.',
     heroBullets: [
-      'Улучшает эрекцию и продлевает сексуальную выносливость',
+      'Улучшает эрекцию и продлевает секс',
       'Природный бустер тестостерона — без химии',
-      'Быстрый эффект 24-48 часов, без побочных эффектов',
+      'Быстрый эффект: действие через 1-2 часа, длительность 24-48 часов, без побочных',
     ],
     inStock: 'В наличии',
-    reassurance: ['Оплата при получении', 'Доставка 1-2 недели', 'Анонимная упаковка'],
+    reassurance: ['Оплата при получении', 'Доставка 1-2 дня', 'Анонимная упаковка'],
     trustItems: [
       { title: '100% натуральный', desc: 'Без химии, красителей и консервантов' },
       { title: 'Сертификат HACCP', desc: 'Производитель Kingdom Honey, Малайзия' },
@@ -406,12 +406,12 @@ const CONTENT: Record<Lang, Content> = {
     subtitle:
       'A natural concentrate instead of pills for potency on a honey base — 5 Malaysian-tradition ingredients. Improves erection, helps you last longer in bed, naturally boosts testosterone.',
     heroBullets: [
-      'Improves erection and boosts sexual stamina',
+      'Improves erection and helps you last longer',
       'Natural testosterone booster — no chemicals',
-      'Fast effect within 24-48 hours, no side effects',
+      'Fast effect: kicks in within 1-2 hours, lasts 24-48 hours, no side effects',
     ],
     inStock: 'In stock',
-    reassurance: ['Pay on delivery', 'Delivery 1-2 weeks', 'Discreet packaging'],
+    reassurance: ['Pay on delivery', 'Delivery 1-2 days', 'Discreet packaging'],
     trustItems: [
       { title: '100% natural', desc: 'No chemistry, no dyes, no preservatives' },
       { title: 'HACCP certified', desc: 'Manufactured by Kingdom Honey, Malaysia' },

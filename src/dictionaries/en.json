@@ -41,7 +41,7 @@
     },
     "delivery": {
       "title": "Fast Delivery",
-      "desc": "Delivery across Ukraine via Nova Poshta and Ukrposhta in 1–2 weeks"
+      "desc": "Delivery across Ukraine via Nova Poshta and Ukrposhta in 1–2 days"
     },
     "privacy": {
       "title": "Privacy",
@@ -58,7 +58,7 @@
   },
   "delivery_info": {
     "title": "Delivery",
-    "text": "We deliver across Ukraine. Delivery time: 1–2 weeks. Nova Poshta and Ukrposhta."
+    "text": "We deliver across Ukraine. Delivery time: 1–2 days. Nova Poshta and Ukrposhta."
   },
   "footer": {
     "rights": "All rights reserved",
