@@ -126,9 +126,9 @@ const CONTENT: Record<Lang, Content> = {
   uk: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Натуральні таблетки для потенції на медовій основі — 5 інгредієнтів малазійської традиції. Покращують ерекцію, продовжують секс, природно підвищують тестостерон.',
+      'Натуральний концентрат замість таблеток для потенції на медовій основі — 5 інгредієнтів малазійської традиції. Покращують ерекцію, продовжують секс, природно підвищують тестостерон.',
     heroBullets: [
-      'Покращує ерекцію та продовжує статеву близькість',
+      'Покращує ерекцію та продовжує сексуальну витривалість',
       'Природний бустер тестостерону — без хімії',
       'Швидкий ефект 24-48 годин, без побічних ефектів',
     ],
@@ -265,9 +265,9 @@ const CONTENT: Record<Lang, Content> = {
   ru: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Натуральные таблетки для потенции на медовой основе — 5 ингредиентов малайзийской традиции. Улучшают эрекцию, продлевают секс, естественно повышают тестостерон.',
+      'Натуральный концентрат вместо таблеток для потенции на медовой основе — 5 ингредиентов малайзийской традиции. Улучшают эрекцию, продлевают секс, естественно повышают тестостерон.',
     heroBullets: [
-      'Улучшает эрекцию и продлевает половую близость',
+      'Улучшает эрекцию и продлевает сексуальную выносливость',
       'Природный бустер тестостерона — без химии',
       'Быстрый эффект 24-48 часов, без побочных эффектов',
     ],
@@ -404,9 +404,9 @@ const CONTENT: Record<Lang, Content> = {
   en: {
     tagline: 'The Ultimate Power Source',
     subtitle:
-      'Natural male enhancement pills on a honey base — 5 Malaysian-tradition ingredients. Improve erection, help you last longer in bed, naturally boost testosterone.',
+      'A natural concentrate instead of pills for potency on a honey base — 5 Malaysian-tradition ingredients. Improves erection, helps you last longer in bed, naturally boosts testosterone.',
     heroBullets: [
-      'Improves erection and helps you last longer in bed',
+      'Improves erection and boosts sexual stamina',
       'Natural testosterone booster — no chemicals',
       'Fast effect within 24-48 hours, no side effects',
     ],

@@ -18,25 +18,25 @@ const slogans: Record<Locale, {
   desc: string
 }> = {
   uk: {
-    eyebrow: "Натуральні таблетки для потенції",
+    eyebrow: "Натуральні БАДи для потенції",
     line1: 'Сила, яку ти',
     italic: 'відчуєш',
     line3: 'щодня',
-    desc: "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс, повертає чоловічу впевненість. Без хімії, без побічних ефектів.",
+    desc: "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс, повертає чоловічу впевненість. Без хімії, без побічних ефектів. З турботою про твоє тіло, енергію та впевненість.",
   },
   ru: {
-    eyebrow: 'Натуральные таблетки для потенции',
+    eyebrow: 'Натуральные БАДы для потенции',
     line1: 'Сила, которую',
     italic: 'чувствуешь',
     line3: 'каждый день',
-    desc: 'Royal Honey VIP — природный бустер тестостерона на медовой основе. Улучшает эрекцию, продлевает секс, возвращает мужскую уверенность. Без химии, без побочных эффектов.',
+    desc: 'Royal Honey VIP — природный бустер тестостерона на медовой основе. Улучшает эрекцию, продлевает секс, возвращает мужскую уверенность. Без химии, без побочных эффектов. С заботой о твоём теле, энергии и уверенности.',
   },
   en: {
-    eyebrow: "Natural male enhancement",
+    eyebrow: "Natural supplements for potency",
     line1: 'The strength you',
     italic: 'feel',
     line3: 'every day',
-    desc: 'Royal Honey VIP — a natural testosterone booster on a honey base. Improves erection, helps you last longer in bed, restores male confidence. No chemicals, no side effects.',
+    desc: 'Royal Honey VIP — a natural testosterone booster on a honey base. Improves erection, helps you last longer in bed, restores male confidence. No chemicals, no side effects. Made with care for your body, energy, and confidence.',
   },
 }
 
