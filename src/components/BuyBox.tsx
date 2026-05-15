@@ -101,7 +101,7 @@ export default function BuyBox({
               </div>
             </div>
             <div>
-              <div className="text-copper text-[10px] tracking-[0.25em] uppercase mb-1">UAH</div>
+              <div className="text-copper text-[10px] tracking-[0.25em] uppercase mb-1">{uahLabel}</div>
               <div className="text-copper font-serif text-5xl md:text-6xl leading-none">
                 {selected.price}
               </div>
