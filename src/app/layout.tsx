@@ -3,7 +3,7 @@ import { Lora, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const SITE_URL = "https://manprime-store.vercel.app";
+const SITE_URL = "https://manprime-store.netlify.app";
 const GA_ID = "G-0SWCELS6C7";
 const FB_VERIFICATION = "qv5sl2g0gi6zzf20gcfe6i9fonvz96";
 const META_PIXEL_ID = "26483128744702559";

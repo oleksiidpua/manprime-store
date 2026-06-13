@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 const PUBLIC_KEY = process.env.LIQPAY_PUBLIC_KEY ?? ''
 const PRIVATE_KEY = process.env.LIQPAY_PRIVATE_KEY ?? ''
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime.vercel.app'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime-store.netlify.app'
 
 export async function createLiqPayUrl(orderId: string, amount: number, email: string): Promise<string> {
   const params = {

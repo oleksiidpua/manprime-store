@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const SITE_URL = 'https://manprime-store.vercel.app'
+const SITE_URL = 'https://manprime-store.netlify.app'
 
 export default function robots(): MetadataRoute.Robots {
   return {

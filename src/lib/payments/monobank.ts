@@ -1,5 +1,5 @@
 const MONO_TOKEN = process.env.MONOBANK_TOKEN ?? ''
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime.vercel.app'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime-store.netlify.app'
 
 export async function createMonobankUrl(orderId: string, amount: number): Promise<string> {
   const res = await fetch('https://api.monobank.ua/api/merchant/invoice/create', {

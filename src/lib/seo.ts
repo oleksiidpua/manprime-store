@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { Locale } from './i18n'
 
-export const SITE_URL = 'https://manprime-store.vercel.app'
+export const SITE_URL = 'https://manprime-store.netlify.app'
 
 const LOCALES: Locale[] = ['uk', 'ru', 'en']
 

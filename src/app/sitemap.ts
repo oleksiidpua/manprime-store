@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/db'
 import { getUniqueSlugs } from '@/lib/blog'
 
-const SITE_URL = 'https://manprime-store.vercel.app'
+const SITE_URL = 'https://manprime-store.netlify.app'
 const LOCALES = ['uk', 'ru', 'en'] as const
 const STATIC_ROUTES = ['', '/about', '/contacts', '/product/forte', '/blog'] as const
 

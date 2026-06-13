@@ -1,7 +1,7 @@
 const PORTMONE_LOGIN = process.env.PORTMONE_LOGIN ?? ''
 const PORTMONE_PASSWORD = process.env.PORTMONE_PASSWORD ?? ''
 const PORTMONE_PAYEE_ID = process.env.PORTMONE_PAYEE_ID ?? ''
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime.vercel.app'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://manprime-store.netlify.app'
 
 export async function createPortmoneUrl(orderId: string, amount: number): Promise<string> {
   const body = {
