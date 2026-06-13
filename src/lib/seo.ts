@@ -3,6 +3,11 @@ import type { Locale } from './i18n'
 
 export const SITE_URL = 'https://manprime-store.netlify.app'
 
+// Default social-share image (served by the app/opengraph-image.png file
+// convention). Referenced explicitly so the og:image tag is always emitted —
+// relying on the file convention alone dropped the tag on the Netlify runtime.
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph-image.png`
+
 const LOCALES: Locale[] = ['uk', 'ru', 'en']
 
 const OG_LOCALE: Record<Locale, string> = {
@@ -41,6 +46,12 @@ export function pageMetadata({
   }
   languages['x-default'] = `${SITE_URL}/uk${path}`
 
+  const image = ogImage
+    ? ogImage.startsWith('http')
+      ? ogImage
+      : `${SITE_URL}${ogImage}`
+    : DEFAULT_OG_IMAGE
+
   return {
     title,
     description,
@@ -53,13 +64,13 @@ export function pageMetadata({
       locale: OG_LOCALE[lang],
       siteName: 'ManPrime',
       type: 'website',
-      ...(ogImage && { images: [{ url: ogImage }] }),
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      ...(ogImage && { images: [ogImage] }),
+      images: [image],
     },
   }
 }

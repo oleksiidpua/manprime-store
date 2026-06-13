@@ -68,11 +68,15 @@ export const metadata: Metadata = {
     title: "ManPrime — Натуральні таблетки для потенції | Royal Honey VIP",
     description:
       "Royal Honey VIP — природний бустер тестостерону на медовій основі. Покращує ерекцію, продовжує секс. Без хімії. Доставка по Україні.",
+    images: [
+      { url: `${SITE_URL}/opengraph-image.png`, width: 1200, height: 630, alt: "ManPrime — Royal Honey VIP" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ManPrime — Натуральні таблетки для потенції",
     description: "Royal Honey VIP — покращити ерекцію, продовжити секс, природно підвищити тестостерон. Доставка по Україні.",
+    images: [`${SITE_URL}/opengraph-image.png`],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   other: {
