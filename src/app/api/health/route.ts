@@ -11,12 +11,15 @@ export async function GET() {
   const startedAt = Date.now()
   let dbOk = false
   let productCount = 0
+  let debugError: string | undefined
+  const hasDbUrl = !!process.env.DATABASE_URL
 
   try {
     productCount = await prisma.product.count()
     dbOk = true
   } catch (err) {
     console.error('[health] db query failed', err)
+    debugError = err instanceof Error ? `${err.name}: ${err.message}` : String(err)
   }
 
   const tookMs = Date.now() - startedAt
@@ -27,6 +30,8 @@ export async function GET() {
       db: dbOk ? 'up' : 'down',
       productCount,
       tookMs,
+      hasDbUrl,
+      debugError,
       ts: new Date().toISOString(),
     },
     {
