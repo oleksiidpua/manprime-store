@@ -42,9 +42,9 @@ function shieldSvg({ size, color = HONEY, glow = false }) {
 // --- OG canvas ---
 function ogSvg({ width, height, locale = 'uk' }) {
   const taglines = {
-    uk: { brand: 'Royal Honey VIP', sub: "Натуральні БАДи для чоловічого здоров'я", domain: 'manprime-store.vercel.app' },
-    ru: { brand: 'Royal Honey VIP', sub: 'Натуральные БАДы для мужского здоровья', domain: 'manprime-store.vercel.app' },
-    en: { brand: 'Royal Honey VIP', sub: "Natural supplements for men's health", domain: 'manprime-store.vercel.app' },
+    uk: { brand: 'Royal Honey VIP', sub: "Натуральні БАДи для чоловічого здоров'я", domain: 'manprime-store.netlify.app' },
+    ru: { brand: 'Royal Honey VIP', sub: 'Натуральные БАДы для мужского здоровья', domain: 'manprime-store.netlify.app' },
+    en: { brand: 'Royal Honey VIP', sub: "Natural supplements for men's health", domain: 'manprime-store.netlify.app' },
   }
   const t = taglines[locale]
 
