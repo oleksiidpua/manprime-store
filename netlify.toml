@@ -1,0 +1,13 @@
+# Netlify configuration for the ManPrime Next.js 16 app.
+# The official @netlify/plugin-nextjs runtime is auto-installed when Netlify
+# detects Next.js — it maps App Router pages, API routes (Node runtime), and
+# the proxy/middleware into Netlify Functions + Edge. Prisma + Supabase work
+# unchanged because the API routes run on the Node.js runtime.
+
+[build]
+  command = "next build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js 16 / React 19 need a modern Node. Pin it so local and CI match.
+  NODE_VERSION = "20"
